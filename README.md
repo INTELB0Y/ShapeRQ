@@ -21,7 +21,20 @@ shape-rq/
 npm install link-to-proj
 ```
 
-### Git
+## Git 
+### Клонирование репозитория
 ```bash
-  git clone 
+  git clone https://github.com/INTELB0Y/ShapeRQ.git
+```
+### Переход в директорию проекта
+```bash
+  cd ShapeRQ
+```
+### Создание новой ветки (до релиза)
+```bash
+  git checkout -b shape-rq/<имя_ветки>
+```
+### Создание новой ветки (после релиз)
+```bash
+  git checkout -b release/<имя_ветки>
 ```
