@@ -1,18 +1,32 @@
+/**
+ * baseURL - URL на который будут отправляться запросы по умолчанию,
+ * рекомендуется использовать его значение как `${export.meta.env.VITE_API_URL}`
+ * auth - Параметры авторизации для запроса, где:
+ * - token - токен авторизации
+ * - headerName - имя заголовка, 'Authorization' как пример
+ * - prefix - префикс для токена, 'Bearer' как пример
+ */
+
 export interface ShapeRQConfig {
     baseURL: string;
     auth?: {
         token: string;
-        headerName?: string; // например "Authorization" или "X-Token"
-        prefix?: string; // например "Bearer" или "Token"
+        headerName?: string;
+        prefix?: string;
     };
     debug?: boolean;
-    headers?: Record<string, string>; // глобальные заголовки
+    headers?: Record<string, string>;
 }
 
 let config: ShapeRQConfig = {
     baseURL: "",
     debug: false,
 };
+
+/**
+ * setConfig - Функция изменения изначальной конфигурации
+ * @param userConfig - Ваши параметры конфигурации
+ */
 
 export function setConfig(userConfig: Partial<ShapeRQConfig>) {
     config = {
