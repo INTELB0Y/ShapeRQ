@@ -1,6 +1,22 @@
-
-.idea
-.git
 node_modules
+npm-debug.log
+yarn-error.log
 package-lock.json
-package.json
+yarn.lock
+
+dist/
+build/
+
+logs/
+*.log
+
+.idea/
+.vscode/
+
+# Тестовые файлы
+coverage/
+*.spec.js
+*.test.js
+
+
+*.tgz
