@@ -1,6 +1,7 @@
 import { method, body, headers } from "./types";
 import { getConfig } from "../core/config";
 import { logWarn, logSuccess, logError, logInfo } from "../utils/logger";
+import { t } from "../locales/i18";
 
 /**
  * request - Функция низшего порядка, основа для запросов порядком выше
@@ -33,22 +34,36 @@ async function request<T>(
     if (response.ok) {
       const data = (await response.json()) as T;
       if (debug) {
-        logSuccess(`Запрос на ${url} вернул статус: ${response.status}`);
-        logInfo(`Полученные данные: ${JSON.stringify(data, null, 2)}`);
+        logSuccess(
+          t("debug.fetch.try.success.message", {
+            url,
+            status: response.status,
+          }),
+        );
+        logInfo(
+          t("debug.fetch.try.success.data", {
+            data: JSON.stringify(data, null, 2),
+          }),
+        );
       }
       return data;
     } else {
       if (debug) {
-        logWarn(`Запрос на ${url} вернул статус: ${response.status}`);
-        logError(`Ошибка: ${response.statusText}`);
+        logWarn(
+          t("debug.fetch.try.error.message", { status: response.status }),
+        );
+        logError(
+          t("debug.fetch.try.error.data", { data: response.statusText }),
+        );
       }
       return null;
     }
   } catch (err) {
     if (debug) {
-      alert(`Ошибка запроса!\n Информация об ошибке:${err}`);
-      logWarn(`Произошла ошибка при запросе.`);
-      logError(`Сообщение об ошибке:\n${err}`);
+      // TODO: Алерт когда-нибудь потом
+      // alert(`Ошибка запроса!\n Информация об ошибке:${err}`);
+      logWarn(t("debug.warn.messageVar1"));
+      logError(t("debug.fetch.catch.error", { err: err }));
     }
     return null;
   }
