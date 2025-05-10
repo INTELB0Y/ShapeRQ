@@ -8,19 +8,19 @@
  */
 
 export interface ShapeRQConfig {
-    baseURL: string;
-    auth?: {
-        token: string;
-        headerName?: string;
-        prefix?: string;
-    };
-    debug?: boolean;
-    headers?: Record<string, string>;
+  baseURL: string;
+  auth?: {
+    token?: string;
+    headerName?: string;
+    prefix?: string;
+  };
+  debug?: boolean;
+  headers?: Record<string, string>;
 }
 
 let config: ShapeRQConfig = {
-    baseURL: "",
-    debug: false,
+  baseURL: "",
+  debug: false,
 };
 
 /**
@@ -29,20 +29,20 @@ let config: ShapeRQConfig = {
  */
 
 export function setConfig(userConfig: Partial<ShapeRQConfig>) {
-    config = {
-        ...config,
-        ...userConfig,
-        auth: {
-            ...config.auth,
-            ...userConfig.auth,
-        },
-        headers: {
-            ...config.headers,
-            ...userConfig.headers,
-        },
-    };
+  config = {
+    ...config,
+    ...userConfig,
+    auth: {
+      ...config.auth,
+      ...userConfig.auth,
+    },
+    headers: {
+      ...config.headers,
+      ...userConfig.headers,
+    },
+  };
 }
 
 export function getConfig(): ShapeRQConfig {
-    return config;
+  return config;
 }
