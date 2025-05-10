@@ -14,6 +14,7 @@ shape-rq/
 │   │   └── index.ts           // client/server search
 │   └── index.ts
 ├── package.json
+├── tsconfig.json
 └── README.md
 ```
 
