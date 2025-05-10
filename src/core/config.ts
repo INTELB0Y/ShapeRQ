@@ -10,7 +10,7 @@
 export interface ShapeRQConfig {
     baseURL: string;
     auth?: {
-        token: string;
+        token?: string;
         headerName?: string;
         prefix?: string;
     };
@@ -22,7 +22,7 @@ export interface ShapeRQConfig {
 let config: ShapeRQConfig = {
     baseURL: "",
     debug: false,
-    lang: "en"
+    lang: "ru",
 };
 
 /**
@@ -42,6 +42,7 @@ export function setConfig(userConfig: Partial<ShapeRQConfig>) {
             ...config.headers,
             ...userConfig.headers,
         },
+        lang: userConfig.lang || config.lang,
     };
 }
 
