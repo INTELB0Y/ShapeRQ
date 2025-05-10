@@ -8,21 +8,20 @@
  */
 
 export interface ShapeRQConfig {
-    baseURL: string;
-    auth?: {
-        token?: string;
-        headerName?: string;
-        prefix?: string;
-    };
-    debug?: boolean;
-    headers?: Record<string, string>;
-    lang?: "ru" | "en";
+  baseURL: string;
+  auth?: {
+    token?: string;
+    headerName?: string;
+    prefix?: string;
+  };
+  debug?: boolean;
+  headers?: Record<string, string>;
+  lang?: "ru" | "en";
 }
 
 let config: ShapeRQConfig = {
-    baseURL: "",
-    debug: false,
-    lang: "ru",
+  baseURL: "",
+  debug: true,
 };
 
 /**
@@ -31,21 +30,21 @@ let config: ShapeRQConfig = {
  */
 
 export function setConfig(userConfig: Partial<ShapeRQConfig>) {
-    config = {
-        ...config,
-        ...userConfig,
-        auth: {
-            ...config.auth,
-            ...userConfig.auth,
-        },
-        headers: {
-            ...config.headers,
-            ...userConfig.headers,
-        },
-        lang: userConfig.lang || config.lang,
-    };
+  config = {
+    ...config,
+    ...userConfig,
+    auth: {
+      ...config.auth,
+      ...userConfig.auth,
+    },
+    headers: {
+      ...config.headers,
+      ...userConfig.headers,
+    },
+    lang: userConfig.lang || config.lang,
+  };
 }
 
 export function getConfig(): ShapeRQConfig {
-    return config;
+  return config;
 }

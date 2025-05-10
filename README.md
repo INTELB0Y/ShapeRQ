@@ -8,6 +8,11 @@ shape-rq/
 │   ├── http/
 │   │   ├── request.ts         // базовые методы get/post/put/delete
 │   │   └── types.ts           // типы запросов и конфигов
+│   ├── http/
+│   │   ├── en.json            // Русская локализация
+│   │   ├── ru.json            // Английская локализация
+│   │   ├── i18.ts             // Скрипт приобразование JSON
+│   │   └── index.ts           // Экспорт локалей
 │   ├── utils/
 │   │   └── logger.ts          // логгер для debug
 │   ├── search/

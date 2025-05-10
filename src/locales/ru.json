@@ -1,0 +1,31 @@
+{
+  "debug": {
+    "fetch": {
+      "try": {
+        "success": {
+          "message": "Запрос к ${url} вернул статус: ${response.status}",
+          "data": "Полученные данные: ${JSON.stringify(data, null, 2)}"
+        },
+        "error": {
+          "message": "Запрос к ${url} завершился с ошибкой, статус: ${response.status}",
+          "data": "Ошибка: ${response.statusText}"
+        }
+      },
+      "catch": {
+        "error": "Сообщение об ошибке:\n${err}"
+      }
+    },
+    "warn": {
+      "messageVar1": "Ошибка при выполнении запроса.",
+      "messageVar2": "Что-то пошло не так."
+    },
+    "info": {
+      "start": "Начало выполнения запроса...",
+      "complete": "Запрос завершён."
+    },
+    "log": {
+      "start": "Запуск логирования...",
+      "debugMode": "Включён режим отладки."
+    }
+  }
+}
