@@ -16,12 +16,13 @@ export interface ShapeRQConfig {
   };
   debug?: boolean;
   headers?: Record<string, string>;
-  lang?: "ru" | "en";
+  lang: "ru" | "en";
 }
 
 let config: ShapeRQConfig = {
   baseURL: "",
   debug: true,
+  lang: "en"
 };
 
 /**
