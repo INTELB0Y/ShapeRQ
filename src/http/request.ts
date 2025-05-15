@@ -1,7 +1,7 @@
-import { method, body, headers } from "./types";
-import { getConfig } from "../core/config";
-import { logWarn, logSuccess, logError, logInfo } from "../utils/logger";
-import { t } from "../locales/i18";
+import {method, body, headers} from "./types";
+import {getConfig} from "../core/config";
+import {logWarn, logSuccess, logError, logInfo} from "../utils/logger";
+import {t} from "../locales/i18";
 
 /**
  * request - Функция низшего порядка, основа для запросов порядком выше
@@ -10,63 +10,63 @@ import { t } from "../locales/i18";
  * @param body - Тело запроса, если необходимо
  */
 async function request<T>(
-  method: method,
-  endpoint?: string,
-  body?: body,
+    method: method,
+    endpoint?: string,
+    body?: body,
 ): Promise<T | null> {
-  const { baseURL, auth, debug } = getConfig();
-  const url = baseURL + endpoint;
+    const {baseURL, auth, debug} = getConfig();
+    const url = baseURL + endpoint;
 
-  const headers: headers = {
-    "content-type": "application/json",
-  };
+    const headers: headers = {
+        "content-type": "application/json",
+    };
 
-  if (auth?.token)
-    headers[auth.headerName || "Authorization"] =
-      `${auth.prefix || "Bearer"} ${auth.token}`;
+    if (auth?.token)
+        headers[auth.headerName || "Authorization"] =
+            `${auth.prefix || "Bearer"} ${auth.token}`;
 
-  try {
-    const response = await fetch(url, {
-      method,
-      headers,
-      body: !["GET", "DELETE"].includes(method) ? JSON.stringify(body) : null,
-    });
-    if (response.ok) {
-      const data = (await response.json()) as T;
-      if (debug) {
-        logSuccess(
-          t("debug.fetch.try.success.message", {
-            url,
-            status: response.status,
-          }),
-        );
-        logInfo(
-          t("debug.fetch.try.success.data", {
-            data: JSON.stringify(data, null, 2),
-          }),
-        );
-      }
-      return data;
-    } else {
-      if (debug) {
-        logWarn(
-          t("debug.fetch.try.error.message", { status: response.status }),
-        );
-        logError(
-          t("debug.fetch.try.error.data", { data: response.statusText }),
-        );
-      }
-      return null;
+    try {
+        const response = await fetch(url, {
+            method,
+            headers,
+            body: !["GET", "DELETE"].includes(method) ? JSON.stringify(body) : null,
+        });
+        if (response.ok) {
+            const data = (await response.json()) as T;
+            if (debug) {
+                logSuccess(
+                    t("Debug:try.success.message", {
+                        url,
+                        status: response.status,
+                    }),
+                );
+                logInfo(
+                    t("Debug:try.success.data", {
+                        data: JSON.stringify(data, null, 2),
+                    }),
+                );
+            }
+            return data;
+        } else {
+            if (debug) {
+                logWarn(
+                    t("Debug:try.error.message", {url}),
+                );
+                logError(
+                    t("Debug:try.error.data", {data: response.statusText}),
+                );
+            }
+            return null;
+        }
+    } catch (err) {
+        if (debug) {
+            // TODO: Алерт когда-нибудь потом
+            // alert(`Ошибка запроса!\n Информация об ошибке:${err}`);
+            logWarn(t("Base:warn.smthWentWrong"));
+            logError(t("Debug:catch.error", {err: err}));
+        }
+        return null;
     }
-  } catch (err) {
-    if (debug) {
-      // TODO: Алерт когда-нибудь потом
-      // alert(`Ошибка запроса!\n Информация об ошибке:${err}`);
-      logWarn(t("debug.warn.messageVar1"));
-      logError(t("debug.fetch.catch.error", { err: err }));
-    }
-    return null;
-  }
 }
 
 /**

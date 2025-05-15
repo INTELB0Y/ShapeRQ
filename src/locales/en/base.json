@@ -1,0 +1,14 @@
+{
+  "warn": {
+    "requestError": "Error on request.",
+    "smthWentWrong": "Something went wrong."
+  },
+  "info": {
+    "start": "Starting request...",
+    "complete": "Request completed."
+  },
+  "log": {
+    "start": "Logging started...",
+    "debugMode": "Debug mode enabled."
+  }
+}

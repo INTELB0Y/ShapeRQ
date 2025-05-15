@@ -1,14 +1,38 @@
-import { getConfig } from "../core/config";
-import { locales } from "./index";
+import {getConfig} from "../core/config";
+import {locales} from "./index";
 
-export function t(path: string, vars: Record<string, any> = {}) {
-  const lang = getConfig().lang || "en";
-  const locale = locales[lang];
+const config = getConfig();
 
-  const keys = path.split(".");
-  let template = keys.reduce((acc: any, key) => acc?.[key], locale);
+function getValueByPath(obj: any, path: string[]): any {
+  return path.reduce((acc, key) => acc?.[key], obj);
+}
 
-  if (typeof template !== "string") return path;
+function interpolate(str: string, vars?: Record<string, any>): string {
+  if (!vars) return str;
+  return str.replace(/\$\{([^}]+)\}/g, (_, expr) => {
+    try {
+      return Function(...Object.keys(vars), `return ${expr}`)(...Object.values(vars));
+    } catch {
+      return `[err:${expr}]`;
+    }
+  });
+}
 
-  return template.replace(/\$\{(.*?)\}/g, (_, key) => vars[key.trim()] ?? "");
+/**
+ * @param key Строка типа "Debug:ключ.значение"
+ * @param vars Переменные для подстановки в шаблон
+ */
+export function t(key: string, vars?: Record<string, any>): string {
+  const [namespace, ...rest] = key.split(":");
+  const path = rest.join(".").split(".");
+  const lang = config.lang;
+
+  // @ts-ignore
+  const dict = locales[lang]?.[namespace];
+  if (!dict) return `[missing namespace "${namespace}"]`;
+
+  const value = getValueByPath(dict, path);
+  if (value == null) return `[missing key "${key}"]`;
+
+  return interpolate(value, vars);
 }
