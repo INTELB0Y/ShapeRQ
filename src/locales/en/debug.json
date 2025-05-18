@@ -1,15 +1,4 @@
 {
-  "try": {
-    "success": {
-      "message": "Request to ${url} returned status: ${response.status}",
-      "data": "Fetched data: ${JSON.stringify(data, null, 2)}"
-    },
-    "error": {
-      "message": "Request to ${url} failed with status: ${response.status}",
-      "data": "Error: ${response.statusText}"
-    }
-  },
-  "catch": {
-    "error": "Error message:\n${err}"
+  "start": {
   }
 }

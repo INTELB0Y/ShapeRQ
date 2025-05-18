@@ -1,0 +1,57 @@
+{
+  "400": {
+    "title": "400: Bad Request",
+    "message": "The request could not be processed due to a syntax error.",
+    "doc": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/400"
+  },
+  "401": {
+    "title": "401: Unauthorized",
+    "message": "Authorization is required to access the requested resource.",
+    "doc": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401"
+  },
+  "403": {
+    "title": "403: Forbidden",
+    "message": "You do not have permission to access this resource.",
+    "doc": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/403"
+  },
+  "404": {
+    "title": "404: Not Found",
+    "message": "The requested resource could not be found. This may be caused by:\n- An incorrect URL\n- A non-existent endpoint on the server",
+    "doc": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/404"
+  },
+  "405": {
+    "title": "405: Method Not Allowed",
+    "message": "The method used in the request is not allowed for this resource.",
+    "doc": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/405"
+  },
+  "408": {
+    "title": "408: Request Timeout",
+    "message": "The server timed out waiting for the request.",
+    "doc": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/408"
+  },
+  "429": {
+    "title": "429: Too Many Requests",
+    "message": "You have sent too many requests in a given amount of time. Please wait and try again.",
+    "doc": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/429"
+  },
+  "500": {
+    "title": "500: Internal Server Error",
+    "message": "The server encountered an unexpected error. It's not your fault.",
+    "doc": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500"
+  },
+  "502": {
+    "title": "502: Bad Gateway",
+    "message": "The server received an invalid response from an upstream server.",
+    "doc": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/502"
+  },
+  "503": {
+    "title": "503: Service Unavailable",
+    "message": "The server is currently unavailable due to maintenance or overload.",
+    "doc": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/503"
+  },
+  "default": {
+    "title": "Error: Unknown Status",
+    "message": "An unknown error occurred. Status: ${response.status}",
+    "doc": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Status"
+  }
+}
