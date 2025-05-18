@@ -1,0 +1,57 @@
+{
+  "400": {
+    "title": "400: Неверный запрос",
+    "message": "Запрос не может быть обработан из-за синтаксической ошибки.",
+    "doc": "https://developer.mozilla.org/ru/docs/Web/HTTP/Status/400"
+  },
+  "401": {
+    "title": "401: Не авторизован",
+    "message": "Для доступа к запрашиваемому ресурсу требуется авторизация.",
+    "doc": "https://developer.mozilla.org/ru/docs/Web/HTTP/Status/401"
+  },
+  "403": {
+    "title": "403: Доступ запрещён",
+    "message": "У вас нет прав для доступа к этому ресурсу.",
+    "doc": "https://developer.mozilla.org/ru/docs/Web/HTTP/Status/403"
+  },
+  "404": {
+    "title": "404: Не найдено",
+    "message": "Запрашиваемый ресурс не найден, это может быть связано с:\n- Неправильным URL адресом\n- Эндпоинт запроса не существует на сервере",
+    "doc": "https://developer.mozilla.org/ru/docs/Web/HTTP/Status/404"
+  },
+  "405": {
+    "title": "405: Метод не поддерживается",
+    "message": "Метод, используемый в запросе, не поддерживается для данного ресурса.",
+    "doc": "https://developer.mozilla.org/ru/docs/Web/HTTP/Status/405"
+  },
+  "408": {
+    "title": "408: Время ожидания истекло",
+    "message": "Сервер завершил ожидание запроса из-за отсутствия данных.",
+    "doc": "https://developer.mozilla.org/ru/docs/Web/HTTP/Status/408"
+  },
+  "429": {
+    "title": "429: Слишком много запросов",
+    "message": "Вы превысили лимит запросов к серверу. Подождите и попробуйте снова.",
+    "doc": "https://developer.mozilla.org/ru/docs/Web/HTTP/Status/429"
+  },
+  "500": {
+    "title": "500: Внутренняя ошибка сервера",
+    "message": "Сервер столкнулся с неожиданной ошибкой. Это не ваша вина.",
+    "doc": "https://developer.mozilla.org/ru/docs/Web/HTTP/Status/500"
+  },
+  "502": {
+    "title": "502: Плохой шлюз",
+    "message": "Сервер получил недопустимый ответ от вышестоящего сервера.",
+    "doc": "https://developer.mozilla.org/ru/docs/Web/HTTP/Status/502"
+  },
+  "503": {
+    "title": "503: Сервис недоступен",
+    "message": "Сервер временно недоступен по техническим причинам.",
+    "doc": "https://developer.mozilla.org/ru/docs/Web/HTTP/Status/503"
+  },
+  "default": {
+    "title": "Ошибка: Неизвестный статус",
+    "message": "Произошла неизвестная ошибка. Статус: ${response.status}",
+    "doc": "https://developer.mozilla.org/ru/docs/Web/HTTP/Status"
+  }
+}

@@ -1,6 +1,6 @@
 import {method, body, headers} from "./types";
 import {getConfig} from "../core/config";
-import {logWarn, logSuccess, logError, logInfo} from "../utils/logger";
+import {logWarn, logSuccess, logError, logInfo, httpErrLog} from "../utils/logger";
 import {t} from "../locales/i18";
 
 /**
@@ -49,19 +49,12 @@ async function request<T>(
             return data;
         } else {
             if (debug) {
-                logWarn(
-                    t("Debug:try.error.message", {url}),
-                );
-                logError(
-                    t("Debug:try.error.data", {data: response.statusText}),
-                );
+                httpErrLog(response.status)
             }
             return null;
         }
     } catch (err) {
         if (debug) {
-            // TODO: Алерт когда-нибудь потом
-            // alert(`Ошибка запроса!\n Информация об ошибке:${err}`);
             logWarn(t("Base:warn.smthWentWrong"));
             logError(t("Debug:catch.error", {err: err}));
         }

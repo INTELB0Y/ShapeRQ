@@ -1,3 +1,5 @@
+import {t} from "../locales/i18";
+
 type iStyles = {
   info: string;
   success: string;
@@ -24,8 +26,22 @@ export function logWarn(msg: string): void {
   console.warn(`%c[ShapeRQ] ⚠️ ${msg}`, styles.warn);
 }
 
+// TODO: Подумать, есть ли от него смысл?
 export function logError(msg: string): void {
   console.error(`%c[ShapeRQ] ❌ ${msg}`, styles.error);
+}
+
+export function httpErrLog(status: number): void {
+  console.error(
+      `%c${t(`Http:${status}.title`)}` +
+      "%c \n" +
+      `%c${t(`Http:${status}.message`)}` +
+      `%c${t(`Http:${status}.doc`)}`,
+      "color: #EF5350; font-weight: bold; font-size: 20px;",
+      "display: block; border-bottom: 1px solid #EF5350; margin-top: -12px",
+      "color: #EF5350; font-size: 12px; font-weight: 400",
+      "font-size: 11px;"
+  )
 }
 
 // TODO: При создании расширенного дебага сделаем подробный дебаг лог.
