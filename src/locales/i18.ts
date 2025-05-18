@@ -1,8 +1,6 @@
 import {getConfig} from "../core/config";
 import {locales} from "./index";
 
-const config = getConfig();
-
 function getValueByPath(obj: any, path: string[]): any {
   return path.reduce((acc, key) => acc?.[key], obj);
 }
@@ -25,7 +23,7 @@ function interpolate(str: string, vars?: Record<string, any>): string {
 export function t(key: string, vars?: Record<string, any>): string {
   const [namespace, ...rest] = key.split(":");
   const path = rest.join(".").split(".");
-  const lang = config.lang;
+  const lang = getConfig().lang;
 
   // @ts-ignore
   const dict = locales[lang]?.[namespace];

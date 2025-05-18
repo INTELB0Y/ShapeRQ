@@ -42,7 +42,7 @@ async function request<T>(
                 );
                 logInfo(
                     t("Debug:try.success.data", {
-                        data: JSON.stringify(data, null, 2),
+                        data: data,
                     }),
                 );
             }
@@ -63,13 +63,13 @@ async function request<T>(
 }
 
 /**
- * get - Функция для отправки GET запроса
- * post - Функция для отправки POST запроса
- * put - Функция для отправки PUT запроса
- * del - Функция для отправки DELETE запроса
- * @param url - Эндпоинт API
+ * get - Функция для отправки GET запроса;
+ * post - Функция для отправки POST запроса;
+ * put - Функция для отправки PUT запроса;
+ * del - Функция для отправки DELETE запроса;
+ * @param endpoint - Эндпоинт API
  */
-export const get = (url: string) => request("GET", url);
+export const get = (endpoint: string) => request("GET", endpoint);
 export const post = (url: string, body: body) => request("POST", url, body);
 export const put = (url: string, body: body) => request("PUT", url, body);
 export const del = (url: string) => request("DELETE", url);
