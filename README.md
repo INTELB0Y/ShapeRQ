@@ -15,6 +15,10 @@ ShapeRQ
 ```bash
 npm install shape-rq
 ```
+## Документация
+- [Конфигурация](/docs/ru/Конфигурация.md')
+- [Запросы](/docs/ru/Запросы.md)
+- [Дебаггинг](/docs/ru/Дебаггинг.md)
 ## Базовое использование
 
 ##### Настройка
@@ -77,4 +81,4 @@ head("MyAPI", "users/")
 
 ```
 
-<span style="font-size: 80%;">Версия - `DEV 0.7.0`</span>
+<small>Версия - `DEV 0.7.0`</small>
