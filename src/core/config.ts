@@ -13,14 +13,14 @@ export interface ShapeRQConfig {
     headerName?: string;
     prefix?: string;
   };
-  debug?: boolean;
   headers?: Record<string, string>;
+  debug?: boolean;
   lang: "ru" | "en";
 }
 
 let config: ShapeRQConfig = {
   APIs: {},
-  debug: true,
+  debug: false,
   lang: "en",
 };
 
