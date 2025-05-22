@@ -46,8 +46,8 @@ setConfig({
 ```typescript
 import { get } from "shape-rq"
 
-// GET запрос, в качестве параметров запроса указывается 
-// ключ вашего API и эндпоинт куда отправляется запрос.
+// В качестве параметров запроса указывается ключ вашего API
+// и эндпоинт куда отправляется запрос.
 get("MyAPI", "users/") // Запрос на example.com/api/users/
     .then(data => {
         // Какая-то ваша логика.
@@ -57,7 +57,7 @@ get("MyAPI", "users/") // Запрос на example.com/api/users/
     })
 // Аналагично работают DELETE, HEAD и OPTIONS запросы.
 ```
-##### Запрос POST
+##### POST Запрос
 ```typescript
 import { post } from "shape-rq"
 
