@@ -50,4 +50,5 @@ npm install link-to-proj
 ```
 
 ###### текушая версия
-`DEV 0.4.0`
+
+`DEV 0.7.0`

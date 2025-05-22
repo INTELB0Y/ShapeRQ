@@ -1,9 +1,10 @@
 {
   "name": "shape-rq",
-  "version": "0.1.0",
+  "version": "0.7.0",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "license": "MIT",
   "exports": {
     ".": {
       "import": "./dist/index.js",
@@ -12,7 +13,8 @@
   },
   "scripts": {
     "build": "tsc",
-    "dev": "tsc --watch"
+    "dev": "tsc --watch",
+    "format": "npx prettier --write ./src"
   },
   "files": [
     "dist"

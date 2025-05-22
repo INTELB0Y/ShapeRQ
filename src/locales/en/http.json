@@ -53,5 +53,11 @@
     "title": "Error: Unknown Status",
     "message": "An unknown error occurred. Status: ${response.status}",
     "doc": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Status"
+  },
+  "networkError": {
+    "title": "Error while making an HTTP request.",
+    "possibleCauses": "- No internet connection\n- Server is unavailable or returned an error\n- CORS error — resource access blocked by browser policy\n- Invalid URL or request parameters\n- Response is not valid JSON\n- Third-party software (e.g., VPN, proxy, antivirus) interfering with the request",
+    "suggestions": "- Check the URL and request parameters\n- Ensure the server is running and accessible\n- Verify CORS headers and server settings\n- Validate the JSON response\n- Try manually repeating the request using curl/Postman",
+    "doc": "https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch#handling_errors"
   }
 }
