@@ -77,4 +77,4 @@ head("MyAPI", "users/")
 
 ```
 
-<span style="font-size: 80%;">Версия - `DEV 0.7.0`</span>
+<small>Версия - `DEV 0.7.0`</small>
