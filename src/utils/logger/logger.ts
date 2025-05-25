@@ -8,7 +8,7 @@ import {
   blinkSuccessStyles,
   blinkDataStyles,
 } from "./styles/styles";
-import {http, iStyles, spec} from "./types";
+import { http, iStyles, spec } from "./types";
 import { method } from "../../http/types";
 
 const getBrowserEngine = () => {
@@ -77,7 +77,11 @@ export function httpSuccessLog(info: http): void {
       `%c${info.body ? t("Base:debug.body") + "\n" + JSON.stringify(info.body, null, 2) : ""}`,
   ];
 
-  const styleValues: string[] = [styles.title, styles.message, styles.body ?? ""];
+  const styleValues: string[] = [
+    styles.title,
+    styles.message,
+    styles.body ?? "",
+  ];
 
   console.log(lines.join("\n"), ...styleValues);
 }
@@ -91,7 +95,8 @@ export function logError(msg: string): void {
 }
 
 export function httpErrLog(status: number): void {
-  let styles: iStyles = getBrowserEngine() === "gecko" ? geckoErrStyles : blinkErrStyles;
+  let styles: iStyles =
+    getBrowserEngine() === "gecko" ? geckoErrStyles : blinkErrStyles;
 
   const lines: string[] = [
     `%c${t(`Http:${status}.title`)}`,
@@ -111,7 +116,8 @@ export function httpErrLog(status: number): void {
 }
 
 export function NetworkErrLog(): void {
-  let styles: iStyles = getBrowserEngine() === "gecko" ? geckoErrStyles : blinkErrStyles;
+  let styles: iStyles =
+    getBrowserEngine() === "gecko" ? geckoErrStyles : blinkErrStyles;
 
   const lines = [
     `%c${t(`Http:networkError.title`)}`,
