@@ -22,6 +22,25 @@
     "README.md",
     "LICENSE"
   ],
+  "keywords": [
+    "http",
+    "request",
+    "axios",
+    "fetch",
+    "typescript",
+    "rest",
+    "api-client",
+    "http-client",
+    "promise",
+    "shape",
+    "shaperq",
+    "frontend",
+    "backend",
+    "node",
+    "browser",
+    "wrapper",
+    "open-source"
+  ],
   "devDependencies": {
     "typescript": "^5.4.0"
   }
