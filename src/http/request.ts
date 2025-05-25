@@ -84,9 +84,8 @@ async function request<T>(
             return null;
         }
     } catch (err) {
-            console.error(typeof err)
         if (debug) {
-            if (err instanceof DOMException) {
+            if (err instanceof Error && err.name === "AbortError") {
                 logError(`${t("Base:debug.abort")} Причина:\n ${err.message}`);
             } else {
                 NetworkErrLog();
