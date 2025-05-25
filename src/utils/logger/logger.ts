@@ -8,7 +8,7 @@ import {
   blinkSuccessStyles,
   blinkDataStyles,
 } from "./styles/styles";
-import { http, spec } from "./types";
+import {http, iStyles, spec} from "./types";
 import { method } from "../../http/types";
 
 const getBrowserEngine = () => {
@@ -49,10 +49,10 @@ export function logInfo(msg: string): void {
 }
 
 export function httpDataLog(data: any): void {
-  const styles =
+  const styles: iStyles =
     getBrowserEngine() === "gecko" ? geckoDataStyles : blinkDataStyles;
 
-  const lines = [
+  const lines: string[] = [
     `%cℹ️ ${t("Base:debug.data")}`,
     `%c${JSON.stringify(data, null, 2)}`,
   ];
@@ -67,17 +67,17 @@ export function logSuccess(msg: string): void {
 }
 
 export function httpSuccessLog(info: http): void {
-  const styles =
+  const styles: iStyles =
     getBrowserEngine() === "gecko" ? geckoSuccessStyles : blinkSuccessStyles;
 
-  const lines = [
+  const lines: string[] = [
     `%c✅ ${t("Base:debug.success")}\n` +
       `%c${info.url}\n` +
       `${info.method}\n` +
       `%c${info.body ? t("Base:debug.body") + "\n" + JSON.stringify(info.body, null, 2) : ""}`,
   ];
 
-  const styleValues = [styles.title, styles.message, styles.body ?? ""];
+  const styleValues: string[] = [styles.title, styles.message, styles.body ?? ""];
 
   console.log(lines.join("\n"), ...styleValues);
 }
@@ -91,7 +91,7 @@ export function logError(msg: string): void {
 }
 
 export function httpErrLog(status: number): void {
-  let styles = getBrowserEngine() === "gecko" ? geckoErrStyles : blinkErrStyles;
+  let styles: iStyles = getBrowserEngine() === "gecko" ? geckoErrStyles : blinkErrStyles;
 
   const lines: string[] = [
     `%c${t(`Http:${status}.title`)}`,
@@ -111,7 +111,7 @@ export function httpErrLog(status: number): void {
 }
 
 export function NetworkErrLog(): void {
-  let styles = getBrowserEngine() === "gecko" ? geckoErrStyles : blinkErrStyles;
+  let styles: iStyles = getBrowserEngine() === "gecko" ? geckoErrStyles : blinkErrStyles;
 
   const lines = [
     `%c${t(`Http:networkError.title`)}`,
