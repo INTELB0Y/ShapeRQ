@@ -1,92 +1,88 @@
-ShapeRQ
----
-**ShapeRQ** это **HTTP-Клиент**, основанный на работе **Promise** для браузера. 
-Основой ShapeRQ является `fetch`, идеей - создание HTTP-Клиента который сэкономит время.
-## Особенности и преимущества 🚀
-### ✅ Простота использования
-- Лаконичный синтаксис без лишнего кода
-- Автоматическая обработка `JSON`
-- Поддержка `Promise`
-### ✅ Гибкость работы с API
-- Лёгко работать с множеством сервисов благодаря `APIs`
-- Просто переключение между `API`
-- Поддержка всех `HTTP` методов
-### ✅ Отладка и понятные ошибки
-- Автоматическое логирование запросов и ответов
-- Стилизация ошибок, с подсказками
-- Локализация под русский и английский языки
-### ✅ Безопасность и контроль
-- Поддержка `AbortController` для отмены запросов.
-- Встроенная **XSRF-защита**.
-- Кастомизация запросов (заголовки, преобразование данных).
-## Установка 💾
+
+# ShapeRQ
+
+**ShapeRQ** is a **Promise-based HTTP client** for the browser, built on top of the native `Fetch API`.  
+Its goal is to **save your time** by offering a clean and flexible API for making HTTP requests.
+
+### Features & Benefits 🚀
+
+#### ✅ Easy to Use
+- Clean, concise syntax
+- Automatic `JSON` handling
+- Full `Promise` support
+
+#### ✅ Flexible API Handling
+- Seamless work with multiple APIs
+- Easy switching between APIs
+- Supports all standard `HTTP` methods
+
+#### ✅ Debug-Friendly
+- Automatic request/response logging
+- Styled and readable error messages
+- Localization support for English and Russian
+
+#### ✅ Secure and Controlled
+- `AbortController` support to cancel requests
+- Built-in **XSRF protection**
+- Fully customizable requests
+
+### Installation 💾
+
 ```bash
 npm install shape-rq
-```
-## Документация 🔗
-- [Конфигурация](/docs/ru/Конфигурация.md)
-- [Запросы](/docs/ru/Запросы.md)
-- [Дебаггинг](/docs/ru/Дебаггинг.md)
-## Базовое использование 🛠️
+````
 
-##### Настройка
-```typescript
+### Documentation 🔗
+
+* *GitBook WIP*
+
+### Basic Usage 🛠️
+
+#### Setup
+
+```ts
 import { setConfig } from "shape-rq";
-```
-```typescript
+
 setConfig({
     APIs: {
         "MyAPI": "example.com/api/"
     },
     debug: true,
-    lang: "ru"
-})
+    lang: "en"
+});
 ```
-##### Запрос
-```typescript
-import { get } from "shape-rq"
 
-// GET запрос, в качестве параметров запроса указывается 
-// ключ вашего API и эндпоинт куда отправляется запрос.
-get("MyAPI", "users/") // Запрос на example.com/api/users/
+#### GET Request
+
+```ts
+import { httpGet } from "shape-rq";
+
+httpGet("MyAPI", "users/")
     .then(data => {
-        // Какая-то ваша логика.
-        // Если происходит ошибка запроса то как data 
-        // возвращается null.
-        console.log(data)
-    })
-// Аналагично работают DELETE, HEAD и OPTIONS запросы.
+        console.log(data);
+    });
 ```
-##### Запрос POST
-```typescript
-import { post } from "shape-rq"
 
-// Данные из тела запроса преобразуются автоматически
-post(
-    "MyAPI", 
-    "/auth/users/",
-    {
+#### POST Request
+
+```ts
+import { httpPost } from "shape-rq";
+
+httpPost("MyAPI", "/auth/users/", {
+    body: {
         username: "JohnDoe",
         password: "12345678"
     }
-).then(
-    data => {
-        // Ваша логика
-        console.log(data)
-    }
-)
-// Логика аналагична GET запросу.
-```
-##### OPTIONS и HEAD
-```typescript
-import { head } from 'shape-rq'
-
-// Отправляем запрос
-head("MyAPI", "users/") 
-// HEAD и OPTIONS не возвращают никаких данных, но 
-// если у вас включён debug то вы увидете 
-// Ответ сервера, и информацию.
-
+}).then(data => {
+    console.log(data);
+});
 ```
 
-<small>Версия - `DEV 0.7.0`</small>
+#### HEAD & OPTIONS
+
+```ts
+import { httpHead } from "shape-rq";
+
+httpHead("MyAPI", "users/");
+```
+**Version** – `Release 1.1.2`

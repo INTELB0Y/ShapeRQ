@@ -12,5 +12,6 @@
     "resolveJsonModule": true,
     "forceConsistentCasingInFileNames": true
   },
-  "include": ["src", "public"]
+  "include": ["src"],
+  "exclude": ["src/tests","**/*.spec.ts", "**/*.test.ts"]
 }

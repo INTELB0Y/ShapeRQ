@@ -1,6 +1,6 @@
-import { iStyles, iSimpleStyles } from "../types";
+import { iStyles, iSimpleStyles } from "../../../types";
 import { baseStyles, sucBaseStyles, errBaseStyles } from "./baseStyles";
-// Простые стили ("Лёгкий дебаг")
+// Simple styles
 export const simpleStyles: iSimpleStyles = {
   info: `color: #42A5F5; font-weight: bold; font-size: 12px`,
   success: `color: #66BB6A; font-weight: bold; font-size: 12px`,
@@ -8,7 +8,7 @@ export const simpleStyles: iSimpleStyles = {
   error: `color: #EF5350; font-weight: bold; font-size: 12px`,
 };
 
-// Стили получаемых данных
+// Data styles
 export const geckoDataStyles: iStyles = {
   title: `color: #42A5F5; font-weight: bold; font-size: 16px;`,
   message: `color: #42A5F5; border: 1px solid #42A5F5; display: block; background-color: #45454d; font-style: italic; padding: 3px; border-radius: 3px; margin-top: 4px`,
@@ -19,7 +19,7 @@ export const blinkDataStyles: iStyles = {
   message: `color: #42A5F5; font-style: italic; margin-top: 4px`,
 };
 
-// Стили успешных запросов
+// Styles for successful requests
 export const geckoSuccessStyles: iStyles = {
   title: sucBaseStyles.title,
   message:
@@ -36,7 +36,7 @@ export const blinkSuccessStyles: iStyles = {
   body: sucBaseStyles.body,
 };
 
-// Стили не удачных запросов
+// Error styles
 export const geckoErrStyles: iStyles = {
   title: errBaseStyles.title,
   message:

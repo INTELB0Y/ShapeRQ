@@ -1,4 +1,10 @@
-import { method, body, headers, api } from "./types";
+import {
+  methodType,
+  headersType,
+  apiType,
+  optionsType,
+  bodyType,
+} from "../types";
 import { getConfig } from "../core/config";
 import {
   logWarn,
@@ -8,45 +14,71 @@ import {
   httpSuccessLog,
   NetworkErrLog,
   systemHttpLog,
+  logError,
 } from "../utils/logger/logger";
 import { t } from "../locales/i18";
+import { getXsrfToken } from "./xsrfSafe";
+import { funcRetry } from "./retry";
 
 /**
  * request - Function for sending requests to the API;
  * @param method - request method, GET, POST, PUT, PATCH, DELETE, HEAD, OPTIONS
  * @param api - API from config
  * @param endpoint - API endpoint
- * @param body - Request body if needed
+ * @param options - options for the request, contain body and signal
  */
 async function request<T>(
-  method: method,
-  api: api,
+  method: methodType,
+  api: apiType,
   endpoint?: string,
-  body?: body,
+  options?: optionsType,
 ): Promise<T | null> {
   const { APIs, auth, debug, retry } = getConfig();
-  const url = APIs[api] + endpoint;
+  const url: string = APIs[api] + endpoint;
+  const safeMethods: methodType[] = ["GET", "HEAD", "OPTIONS"];
   const retryStatus = [408, 425, 429, 500, 502, 503, 504];
   const time = retry?.time ?? 1;
   const delay = (ms: number) =>
     new Promise((res) => setTimeout(() => res("lf"), ms));
 
-  const headers: headers = {
+  const headers: headersType = {
     "content-type": "application/json",
   };
 
-  if (auth?.token)
-    headers[auth.headerName || "Authorization"] =
-      `${auth.prefix || "Bearer"} ${auth.token}`;
+  if (auth) {
+    if (typeof auth === "object" && "token" in auth) {
+      headers[String(auth.headerName || "Authorization")] =
+        `${auth.prefix || "Bearer"} ${auth.token}`;
+    } else if (
+      typeof auth === "object" &&
+      api in auth &&
+      auth[api] &&
+      "token" in auth[api]
+    ) {
+      headers[String(auth[api].headerName || "Authorization")] =
+        `${auth[api].prefix || "Bearer"} ${auth[api].token}`;
+    }
+  }
+
+  if (!safeMethods.includes(method)) {
+    const token = getXsrfToken();
+    if (!token) {
+      debug && logWarn(t("Base:debug.xsrf"));
+      return null;
+    }
+    options?.xsrf !== false ? (headers["X-CSRFToken"] = token) : null;
+  }
 
   try {
     debug && logInfo(t("Base:info.start"));
+    const body = options?.body ? JSON.stringify(options.body) : null;
     const response = await fetch(url, {
       method,
       headers,
       body: !["GET", "DELETE", "HEAD", "OPTIONS"].includes(method)
         ? JSON.stringify(body)
         : null,
+      signal: options?.signal,
     });
     if (response.ok) {
       const data = !["HEAD", "OPTIONS"].includes(method)
@@ -93,124 +125,105 @@ async function request<T>(
     }
   } catch (err: any) {
     if (debug) {
-      console.info(JSON.stringify(err));
-      NetworkErrLog();
-    }
-
-    if (retry?.attempts && retry.attempts > 0) {
-      for (let index = 1; index < retry.attempts; index++) {
-        await delay(time * 1000);
-        const data = await funcRetry(method, headers, url, body);
-        if (data) {
-          return data;
-        }
+      if (err instanceof Error && err.name === "AbortError") {
+        logError(`${t("Base:debug.abort")} Причина:\n ${err.message}`);
+      } else {
+        NetworkErrLog();
       }
-      return null;
+      if (retry?.attempts && retry.attempts > 0) {
+        const body = options?.body ? JSON.stringify(options.body) : null;
+        for (let index = 1; index < retry.attempts; index++) {
+          await delay(time * 1000);
+          const data = await funcRetry(method, headers, url, body);
+          if (data) {
+            return data;
+          }
+        }
+        return null;
+      }
+      throw err;
     }
 
     return null;
   }
 }
 
-async function funcRetry(
-  method: method,
-  headers: headers,
-  url: string,
-  body?: body,
-) {
-  const { debug } = getConfig();
-  try {
-    debug && logInfo(t("Base:info.start"));
-    const response = await fetch(url, {
-      method,
-      headers,
-      body: !["GET", "DELETE", "HEAD", "OPTIONS"].includes(method)
-        ? JSON.stringify(body)
-        : null,
-    });
-    if (response.ok) {
-      const data = !["HEAD", "OPTIONS"].includes(method)
-        ? await response.json()
-        : null;
-      if (debug) {
-        logInfo(t("Base:info.complete"));
-        if (["HEAD", "OPTIONS"].includes(method)) {
-          systemHttpLog(response, method, url);
-        } else {
-          httpSuccessLog({
-            url: url,
-            method: method,
-            body: body,
-          });
-          data ? httpDataLog(data) : logWarn(t("Base:debug.empty"));
-        }
-      }
-      return data;
-    } else {
-      if (debug) {
-        httpErrLog(response.status);
-      }
-    }
-  } catch (err) {
-    if (debug) {
-      console.info(JSON.stringify(err));
-      NetworkErrLog();
-    }
-  }
-  return null;
-}
+/**
+ * httpGet - Function for sending GET request;
+ * @param api - API from config
+ * @param endpoint - API endpoint
+ * @param options - Request options, can contain body and signal
+ */
+export const httpGet = (
+  api: apiType,
+  endpoint: string,
+  options?: optionsType,
+) => request("GET", api, endpoint, options);
 
 /**
- * get - Function for sending GET request;
+ * httpDel - Function for sending DELETE request;
  * @param api - API from config
  * @param endpoint - API endpoint
+ * @param options - Request options, can contain body and signal
  */
-export const get = (api: api, endpoint: string) =>
-  request("GET", api, endpoint);
+export const httpDel = (
+  api: apiType,
+  endpoint: string,
+  options?: optionsType,
+) => request("DELETE", api, endpoint, options);
+/**
+ * httpHead - Function for sending HEAD request;
+ * @param api - API from config
+ * @param endpoint - API endpoint
+ * @param options - Request options, can contain body and signal
+ */
+export const httpHead = (
+  api: apiType,
+  endpoint: string,
+  options?: optionsType,
+) => request("HEAD", api, endpoint, options);
+/**
+ * httpOpt - Function for sending OPTIONS request;
+ * @param api - API from config
+ * @param endpoint - API endpoint
+ * @param options - Request options, can contain body and signal
+ */
+export const httpOpt = (
+  api: apiType,
+  endpoint: string,
+  options?: optionsType,
+) => request("OPTIONS", api, endpoint, options);
+/**
+ * httpPost - Function for sending POST request;
+ * @param api - API from config
+ * @param endpoint - API endpoint
+ * @param options - Request options, can contain body and signal
+ */
+export const httpPost = (
+  api: apiType,
+  endpoint: string,
+  options?: optionsType,
+) => request("POST", api, endpoint, options);
+/**
+ * httpPut - Function for sending PUT request;
+ * @param api - API from config
+ * @param endpoint - API endpoint
+ * @param options - Request options, can contain body and signal
+ */
+export const httpPut = (
+  api: apiType,
+  endpoint: string,
+  options?: optionsType,
+) => request("PUT", api, endpoint, options);
 
 /**
- * del - Function for sending DELETE request;
+ * httpPatch - Function for sending PATCH request;
  * @param api - API from config
  * @param endpoint - API endpoint
+ * @param options - Request options, can contain body and signal
  */
-export const del = (api: api, endpoint: string) =>
-  request("DELETE", api, endpoint);
-/**
- * head - Function for sending HEAD request;
- * @param api - API from config
- * @param endpoint - API endpoint
- */
-export const head = (api: api, endpoint: string) =>
-  request("HEAD", api, endpoint);
-/**
- * options - Function for sending OPTIONS request;
- * @param api - API from config
- * @param endpoint - API endpoint
- */
-export const options = (api: api, endpoint: string) =>
-  request("OPTIONS", api, endpoint);
-/**
- * post - Function for sending POST request;
- * @param api - API from config
- * @param endpoint - API endpoint
- * @param body - Body of the request
- */
-export const post = (api: api, endpoint: string, body: body) =>
-  request("POST", api, endpoint, body);
-/**
- * put - Function for sending PUT request;
- * @param api - API from config
- * @param endpoint - API endpoint
- * @param body - Body of the request
- */
-export const put = (api: api, endpoint: string, body: body) =>
-  request("PUT", api, endpoint, body);
-
-/**
- * patch - Function for sending PATCH request;
- * @param api - API from config
- * @param endpoint - API endpoint
- * @param body - Body of the request
- */
-export const patch = (api: api, endpoint: string, body: body) =>
-  request("PATCH", api, endpoint, body);
+export const httpPatch = (
+  api: apiType,
+  endpoint: string,
+  options?: optionsType,
+) => request("PATCH", api, endpoint, options);

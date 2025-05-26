@@ -1,27 +1,4 @@
-/**
- * APIs - Dictionary of your API urls
- * auth - Request authorization parameters:
- * - token - Auth token
- * - headerName - headerName, 'Authorization' default
- * - prefix - Token prefix, 'Bearer' default
- */
-
-export interface ShapeRQConfig {
-  APIs: Record<string, string>;
-  auth?: {
-    token?: string;
-    headerName?: string;
-    prefix?: string;
-  };
-  headers?: Record<string, string>;
-  debug?: boolean;
-  retry?: {
-    attempts: number;
-    time: number;
-    error: number;
-  };
-  lang: "ru" | "en";
-}
+import { ShapeRQConfig } from "../types";
 
 let config: ShapeRQConfig = {
   APIs: {},
