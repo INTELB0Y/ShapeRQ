@@ -16,10 +16,10 @@ export interface ShapeRQConfig {
   headers?: Record<string, string>;
   debug?: boolean;
   retry?: {
-    attempts:number;
-    time:number;
+    attempts: number;
+    time: number;
     error: number;
-  }
+  };
   lang: "ru" | "en";
 }
 
@@ -50,9 +50,9 @@ export function setConfig(userConfig: Partial<ShapeRQConfig>) {
       ...config.headers,
       ...userConfig.headers,
     },
-    retry:{
-      attempts : userConfig.retry?.attempts ?? config.retry?.attempts ?? 0,
-      time:userConfig.retry?.time ?? config.retry?.time ?? 0,
+    retry: {
+      attempts: userConfig.retry?.attempts ?? config.retry?.attempts ?? 0,
+      time: userConfig.retry?.time ?? config.retry?.time ?? 0,
       error: userConfig.retry?.error ?? config.retry?.error ?? 0,
     },
     lang: userConfig.lang || config.lang,
