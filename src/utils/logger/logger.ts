@@ -8,8 +8,7 @@ import {
   blinkSuccessStyles,
   blinkDataStyles,
 } from "./styles/styles";
-import { http, iStyles, spec } from "./types";
-import { method } from "../../http/types";
+import { httpData, iStyles, methodType } from "../../types";
 
 const getBrowserEngine = () => {
   const userAgent = navigator.userAgent;
@@ -22,7 +21,7 @@ const getBrowserEngine = () => {
 
 export function systemHttpLog(
   response: Response,
-  method: method,
+  method: methodType,
   url: string,
 ): void {
   const styles = getBrowserEngine() ? geckoSuccessStyles : blinkSuccessStyles;
@@ -66,7 +65,7 @@ export function logSuccess(msg: string): void {
   console.log(`%c[ShapeRQ] ✅ ${msg}`, simpleStyles.success);
 }
 
-export function httpSuccessLog(info: http): void {
+export function httpSuccessLog(info: httpData): void {
   const styles: iStyles =
     getBrowserEngine() === "gecko" ? geckoSuccessStyles : blinkSuccessStyles;
 

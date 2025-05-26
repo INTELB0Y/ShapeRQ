@@ -1,12 +1,6 @@
 
 # ShapeRQ
 
-> 🌐 Multi-language: [English](#english) | [Русский](#русский)
-
----
-
-## English
-
 **ShapeRQ** is a **Promise-based HTTP client** for the browser, built on top of the native `Fetch API`.  
 Its goal is to **save your time** by offering a clean and flexible API for making HTTP requests.
 
@@ -40,9 +34,7 @@ npm install shape-rq
 
 ### Documentation 🔗
 
-* [Configuration](/docs/en/Configuration.md)
-* [Requests](/docs/en/Requests.md)
-* [Debugging](/docs/en/Debugging.md)
+* *GitBook WIP*
 
 ### Basic Usage 🛠️
 
@@ -63,9 +55,9 @@ setConfig({
 #### GET Request
 
 ```ts
-import { get } from "shape-rq";
+import { httpGet } from "shape-rq";
 
-get("MyAPI", "users/")
+httpGet("MyAPI", "users/")
     .then(data => {
         console.log(data);
     });
@@ -74,11 +66,13 @@ get("MyAPI", "users/")
 #### POST Request
 
 ```ts
-import { post } from "shape-rq";
+import { httpPost } from "shape-rq";
 
-post("MyAPI", "/auth/users/", {
-    username: "JohnDoe",
-    password: "12345678"
+httpPost("MyAPI", "/auth/users/", {
+    body: {
+        username: "JohnDoe",
+        password: "12345678"
+    }
 }).then(data => {
     console.log(data);
 });
@@ -87,104 +81,8 @@ post("MyAPI", "/auth/users/", {
 #### HEAD & OPTIONS
 
 ```ts
-import { head } from "shape-rq";
+import { httpHead } from "shape-rq";
 
-head("MyAPI", "users/");
+httpHead("MyAPI", "users/");
 ```
-
----
-
-## Русский
-
-**ShapeRQ** — это **HTTP-клиент** на основе `Promise` для браузера, построенный на `Fetch API`.
-Цель — **сэкономить время**, предоставляя удобный и гибкий способ работы с HTTP-запросами.
-
-### Особенности и преимущества 🚀
-
-#### ✅ Простота использования
-
-* Лаконичный синтаксис
-* Автоматическая обработка `JSON`
-* Поддержка `Promise`
-
-#### ✅ Гибкость работы с API
-
-* Работа с множеством API через `APIs`
-* Лёгкое переключение между API
-* Поддержка всех HTTP-методов
-
-#### ✅ Отладка и ошибки
-
-* Автоматическое логирование запросов и ответов
-* Стилизация ошибок с подсказками
-* Локализация: русский и английский
-
-#### ✅ Безопасность и контроль
-
-* Поддержка `AbortController`
-* Встроенная XSRF-защита
-* Гибкая кастомизация запросов
-
-### Установка 💾
-
-```bash
-npm install shape-rq
-```
-
-### Документация 🔗
-
-* [Конфигурация](/docs/ru/Конфигурация.md)
-* [Запросы](/docs/ru/Запросы.md)
-* [Дебаггинг](/docs/ru/Дебаггинг.md)
-
-### Базовое использование 🛠️
-
-#### Настройка
-
-```ts
-import { setConfig } from "shape-rq";
-
-setConfig({
-    APIs: {
-        "MyAPI": "example.com/api/"
-    },
-    debug: true,
-    lang: "ru"
-});
-```
-
-#### GET-запрос
-
-```ts
-import { get } from "shape-rq";
-
-get("MyAPI", "users/")
-    .then(data => {
-        console.log(data);
-    });
-```
-
-#### POST-запрос
-
-```ts
-import { post } from "shape-rq";
-
-post("MyAPI", "/auth/users/", {
-    username: "JohnDoe",
-    password: "12345678"
-}).then(data => {
-    console.log(data);
-});
-```
-
-#### HEAD и OPTIONS
-
-```ts
-import { head } from "shape-rq";
-
-head("MyAPI", "users/");
-```
-
----
-
-**Version** – `Release 1.0.0`
+**Version** – `Release 1.1.2`

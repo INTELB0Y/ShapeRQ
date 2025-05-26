@@ -1,4 +1,4 @@
-import { method, body, headers, api } from "./types";
+import { methodType, headersType, apiType, optionsType } from "../types";
 import { getConfig } from "../core/config";
 import {
   logWarn,
@@ -18,46 +18,56 @@ import { getXsrfToken } from "./xsrfSafe";
  * @param method - request method, GET, POST, PUT, PATCH, DELETE, HEAD, OPTIONS
  * @param api - API from config
  * @param endpoint - API endpoint
- * @param body - Request body if needed
- * @param signal - Abort signal
+ * @param options - options for the request, contain body and signal
  */
 async function request<T>(
-  method: method,
-  api: api,
+  method: methodType,
+  api: apiType,
   endpoint?: string,
-  body?: body,
-  signal?: AbortSignal,
+  options?: optionsType,
 ): Promise<T | null> {
   const { APIs, auth, debug } = getConfig();
   const url: string = APIs[api] + endpoint;
-  const safeMethods: method[] = ["GET", "HEAD", "OPTIONS"];
+  const safeMethods: methodType[] = ["GET", "HEAD", "OPTIONS"];
 
-  const headers: headers = {
+  const headers: headersType = {
     "content-type": "application/json",
   };
 
-  if (auth?.token)
-    headers[auth.headerName || "Authorization"] =
-      `${auth.prefix || "Bearer"} ${auth.token}`;
+  if (auth) {
+    if (typeof auth === "object" && "token" in auth) {
+      headers[String(auth.headerName || "Authorization")] =
+        `${auth.prefix || "Bearer"} ${auth.token}`;
+    } else if (
+      typeof auth === "object" &&
+      api in auth &&
+      auth[api] &&
+      "token" in auth[api]
+    ) {
+      headers[String(auth[api].headerName || "Authorization")] =
+        `${auth[api].prefix || "Bearer"} ${auth[api].token}`;
+    }
+  }
 
   if (!safeMethods.includes(method)) {
     const token = getXsrfToken();
     if (!token) {
-      logWarn(t("Base:debug.xsrf"));
+      debug && logWarn(t("Base:debug.xsrf"));
       return null;
     }
-    headers["X-CSRFToken"] = token;
+    options?.xsrf !== false ? (headers["X-CSRFToken"] = token) : null;
   }
 
   try {
     debug && logInfo(t("Base:info.start"));
+    const body = options?.body ? JSON.stringify(options.body) : null;
     const response = await fetch(url, {
       method,
       headers,
       body: !["GET", "DELETE", "HEAD", "OPTIONS"].includes(method)
         ? JSON.stringify(body)
         : null,
-      signal,
+      signal: options?.signal,
     });
     if (response.ok) {
       const data = !["HEAD", "OPTIONS"].includes(method)
@@ -97,75 +107,63 @@ async function request<T>(
 }
 
 /**
- * get - Function for sending GET request;
+ * httpGet - Function for sending GET request;
  * @param api - API from config
  * @param endpoint - API endpoint
- * @param signal - Abort signal
+ * @param options - Request options, can contain body and signal
  */
-export const get = (api: api, endpoint: string, signal?: AbortSignal) =>
-  request("GET", api, endpoint, signal);
+export const httpGet = (api: apiType, endpoint: string, options?: optionsType) =>
+  request("GET", api, endpoint, options);
 
 /**
- * del - Function for sending DELETE request;
+ * httpDel - Function for sending DELETE request;
  * @param api - API from config
  * @param endpoint - API endpoint
- * @param signal - Abort signal
+ * @param options - Request options, can contain body and signal
  */
-export const del = (api: api, endpoint: string, signal?: AbortSignal) =>
-  request("DELETE", api, endpoint, signal);
+export const httpDel = (api: apiType, endpoint: string, options?: optionsType) =>
+  request("DELETE", api, endpoint, options);
 /**
- * head - Function for sending HEAD request;
+ * httpHead - Function for sending HEAD request;
  * @param api - API from config
  * @param endpoint - API endpoint
- * @param signal - Abort signal
+ * @param options - Request options, can contain body and signal
  */
-export const head = (api: api, endpoint: string, signal?: AbortSignal) =>
-  request("HEAD", api, endpoint, signal);
+export const httpHead = (api: apiType, endpoint: string, options?: optionsType) =>
+  request("HEAD", api, endpoint, options);
 /**
- * options - Function for sending OPTIONS request;
+ * httpOpt - Function for sending OPTIONS request;
  * @param api - API from config
  * @param endpoint - API endpoint
- * @param signal - Abort signal
+ * @param options - Request options, can contain body and signal
  */
-export const options = (api: api, endpoint: string, signal?: AbortSignal) =>
-  request("OPTIONS", api, endpoint, signal);
-/**
- * post - Function for sending POST request;
- * @param api - API from config
- * @param endpoint - API endpoint
- * @param body - Body of the request
- * @param signal - Abort signal
- */
-export const post = (
-  api: api,
+export const httpOpt = (
+  api: apiType,
   endpoint: string,
-  body: body,
-  signal?: AbortSignal,
-) => request("POST", api, endpoint, body, signal);
+  options?: optionsType,
+) => request("OPTIONS", api, endpoint, options);
 /**
- * put - Function for sending PUT request;
+ * httpPost - Function for sending POST request;
  * @param api - API from config
  * @param endpoint - API endpoint
- * @param body - Body of the request
- * @param signal - Abort signal
+ * @param options - Request options, can contain body and signal
  */
-export const put = (
-  api: api,
-  endpoint: string,
-  body: body,
-  signal?: AbortSignal,
-) => request("PUT", api, endpoint, body, signal);
+export const httpPost = (api: apiType, endpoint: string, options?: optionsType) =>
+  request("POST", api, endpoint, options);
+/**
+ * httpPut - Function for sending PUT request;
+ * @param api - API from config
+ * @param endpoint - API endpoint
+ * @param options - Request options, can contain body and signal
+ */
+export const httpPut = (api: apiType, endpoint: string, options?: optionsType) =>
+  request("PUT", api, endpoint, options);
 
 /**
- * patch - Function for sending PATCH request;
+ * httpPatch - Function for sending PATCH request;
  * @param api - API from config
  * @param endpoint - API endpoint
- * @param body - Body of the request
- * @param signal - Abort signal
+ * @param options - Request options, can contain body and signal
  */
-export const patch = (
-  api: api,
-  endpoint: string,
-  body: body,
-  signal?: AbortSignal,
-) => request("PATCH", api, endpoint, body, signal);
+export const httpPatch = (api: apiType, endpoint: string, options?: optionsType) =>
+  request("PATCH", api, endpoint, options);
