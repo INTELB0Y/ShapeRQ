@@ -26,7 +26,7 @@ export type optionsType = {
 
 // Config types
 type authType = {
-  token: string;
+  token: string | null;
   headerName?: string;
   prefix?: string;
 };
