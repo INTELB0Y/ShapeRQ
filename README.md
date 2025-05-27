@@ -1,6 +1,5 @@
-
-# ShapeRQ
-
+ShapeRQ
+---
 **ShapeRQ** is a **Promise-based HTTP client** for the browser, built on top of the native `Fetch API`.  
 Its goal is to **save your time** by offering a clean and flexible API for making HTTP requests.
 

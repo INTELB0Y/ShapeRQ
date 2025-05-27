@@ -49,23 +49,22 @@ async function request<T>(
     }
   }
 
-  if (!safeMethods.includes(method)) {
+  if (!safeMethods.includes(method) && options?.xsrf !== false) {
     const token = getXsrfToken();
     if (!token) {
       debug && logWarn(t("Base:debug.xsrf"));
       return null;
     }
-    options?.xsrf !== false ? (headers["X-CSRFToken"] = token) : null;
+    headers["X-CSRFToken"] = token;
   }
 
   try {
     debug && logInfo(t("Base:info.start"));
-    const body = options?.body ? JSON.stringify(options.body) : null;
     const response = await fetch(url, {
       method,
       headers,
       body: !["GET", "DELETE", "HEAD", "OPTIONS"].includes(method)
-        ? JSON.stringify(body)
+        ? JSON.stringify(options?.body)
         : null,
       signal: options?.signal,
     });
@@ -81,7 +80,7 @@ async function request<T>(
           httpSuccessLog({
             url: url,
             method: method,
-            body: body,
+            body: options?.body,
           });
           data ? httpDataLog(data) : logWarn(t("Base:debug.empty"));
         }
