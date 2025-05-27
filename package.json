@@ -1,0 +1,47 @@
+{
+  "name": "shape-rq",
+  "version": "1.1.0",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "license": "MIT",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "format": "npx prettier --write ./src"
+  },
+  "files": [
+    "dist",
+    "package.json",
+    "README.md",
+    "LICENSE"
+  ],
+  "keywords": [
+    "http",
+    "request",
+    "axios",
+    "fetch",
+    "typescript",
+    "rest",
+    "api-client",
+    "http-client",
+    "promise",
+    "shape",
+    "shaperq",
+    "frontend",
+    "backend",
+    "node",
+    "browser",
+    "wrapper",
+    "open-source"
+  ],
+  "devDependencies": {
+    "typescript": "^5.4.0"
+  }
+}
