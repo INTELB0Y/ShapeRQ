@@ -11,7 +11,7 @@ import {
   logError,
 } from "../utils/logger/logger";
 import { t } from "../locales/i18";
-import { getXsrfToken } from "./xsrfSafe";
+import { getXsrfToken } from "./xsrfProtection";
 
 /**
  * request - Function for sending requests to the API;
