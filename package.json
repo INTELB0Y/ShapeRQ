@@ -14,7 +14,7 @@
   "scripts": {
     "build": "tsc",
     "dev": "tsc --watch",
-    "format": "npx prettier --write ./src"
+    "format": "npx prettier --write ./src/"
   },
   "files": [
     "dist",

@@ -22,13 +22,30 @@ export type optionsType = {
   body?: bodyType;
   xsrf?: boolean;
   signal?: AbortSignal | null;
+  hooks?: ShapeRQHooks;
 };
 
 // Config types
-type authType = {
+export type authType = {
   token: string | null;
   headerName?: string;
   prefix?: string;
+};
+
+export type OnErrorParams = {
+  error: unknown;
+  retry: () => Promise<unknown>;
+  endpoint?: string;
+  method?: methodType;
+  status?: number;
+  aborted?: boolean;
+  isNetworkError?: boolean;
+};
+
+export type ShapeRQHooks = {
+  onError?: (params: OnErrorParams) => Promise<unknown | null> | unknown | null;
+  onRequest?: () => void;
+  onResponse?: <T>(data: T) => void;
 };
 
 export interface ShapeRQConfig {
@@ -36,7 +53,7 @@ export interface ShapeRQConfig {
   auth?: authType | Record<string, authType>;
   headers?: Record<string, string>;
   debug?: boolean;
-  lang: "ru" | "en";
+  lang?: "ru" | "en";
 }
 
 // Logger types
