@@ -3,7 +3,6 @@ import {
   headersType,
   apiType,
   optionsType,
-  ShapeRQHooks,
   authType,
 } from "../types";
 import { getConfig } from "../core/config";
