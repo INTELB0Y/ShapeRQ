@@ -10,4 +10,4 @@ export {
 
 export { setConfig } from "./core/config";
 
-export { ShapeRQHooks } from "./types";
+export type { ShapeRQHooks } from "./types";
