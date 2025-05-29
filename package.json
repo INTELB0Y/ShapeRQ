@@ -1,6 +1,6 @@
 {
   "name": "shape-rq",
-  "version": "1.1.4",
+  "version": "1.2.0",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -14,7 +14,7 @@
   "scripts": {
     "build": "tsc",
     "dev": "tsc --watch",
-    "format": "npx prettier --write ./src"
+    "format": "npx prettier --write ./src/"
   },
   "files": [
     "dist",
