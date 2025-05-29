@@ -155,43 +155,34 @@ export const httpGet = (
 ) => request("GET", api, endpoint, options);
 
 /**
- * httpDel - Function for sending DELETE request;
- * @param api - API from config
- * @param endpoint - API endpoint
- * @param options - Request options, can contain body and signal
+ * Wrapper for request with DELETE method. See {@link request} for details.
  */
 export const httpDel = (
   api: apiType,
   endpoint: string,
   options?: optionsType,
 ) => request("DELETE", api, endpoint, options);
+
 /**
- * httpHead - Function for sending HEAD request;
- * @param api - API from config
- * @param endpoint - API endpoint
- * @param options - Request options, can contain body and signal
+ * Wrapper for request with HEAD method. See {@link request} for details.
  */
 export const httpHead = (
   api: apiType,
   endpoint: string,
   options?: optionsType,
 ) => request("HEAD", api, endpoint, options);
+
 /**
- * httpOpt - Function for sending OPTIONS request;
- * @param api - API from config
- * @param endpoint - API endpoint
- * @param options - Request options, can contain body and signal
+ * Wrapper for request with OPTIONS method. See {@link request} for details.
  */
 export const httpOpt = (
   api: apiType,
   endpoint: string,
   options?: optionsType,
 ) => request("OPTIONS", api, endpoint, options);
+
 /**
- * httpPost - Function for sending POST request;
- * @param api - API from config
- * @param endpoint - API endpoint
- * @param options - Request options, can contain body and signal
+ * Wrapper for request with POST method. See {@link request} for details.
  */
 export const httpPost = (
   api: apiType,
@@ -199,10 +190,7 @@ export const httpPost = (
   options?: optionsType,
 ) => request("POST", api, endpoint, options);
 /**
- * httpPut - Function for sending PUT request;
- * @param api - API from config
- * @param endpoint - API endpoint
- * @param options - Request options, can contain body and signal
+ * Wrapper for request with PUT method. See {@link request} for details.
  */
 export const httpPut = (
   api: apiType,
@@ -211,10 +199,7 @@ export const httpPut = (
 ) => request("PUT", api, endpoint, options);
 
 /**
- * httpPatch - Function for sending PATCH request;
- * @param api - API from config
- * @param endpoint - API endpoint
- * @param options - Request options, can contain body and signal
+ * Wrapper for request with PATCH method. See {@link request} for details.
  */
 export const httpPatch = (
   api: apiType,
