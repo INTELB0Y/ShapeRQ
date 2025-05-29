@@ -8,7 +8,7 @@ import {
   blinkSuccessStyles,
   blinkDataStyles,
 } from "./styles/styles";
-import { httpData, iStyles, methodType } from "../../types";
+import type { httpData, iStyles, methodType } from "../../types";
 
 const getBrowserEngine = () => {
   const userAgent = navigator.userAgent;

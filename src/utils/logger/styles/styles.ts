@@ -1,4 +1,4 @@
-import { iStyles, iSimpleStyles } from "../../../types";
+import type { iStyles, iSimpleStyles } from "../../../types";
 import { baseStyles, sucBaseStyles, errBaseStyles } from "./baseStyles";
 // Simple styles
 export const simpleStyles: iSimpleStyles = {
