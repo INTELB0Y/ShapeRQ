@@ -1,4 +1,4 @@
-import { ShapeRQConfig } from "../types";
+import type { ShapeRQConfig } from "../types";
 
 let config: ShapeRQConfig = {
   APIs: {},
