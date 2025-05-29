@@ -7,4 +7,4 @@ Its goal is to **save your time** by offering a clean and flexible API for makin
  
 ---
 
-**Version** – `Release 1.2.0`
+**Version** – `Release 1.2.3`
