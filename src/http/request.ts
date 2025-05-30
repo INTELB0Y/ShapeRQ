@@ -1,10 +1,4 @@
-import type {
-  methodType,
-  headersType,
-  apiType,
-  optionsType,
-  authType,
-} from "../types";
+import type { methodType, headersType, apiType, optionsType } from "../types";
 import { getConfig } from "../core/config";
 import {
   logWarn,
@@ -32,34 +26,26 @@ async function request<T>(
   endpoint?: string,
   options?: optionsType,
 ): Promise<T | null> {
-  const { APIs, auth, debug } = getConfig();
-  const url = APIs[api] + (endpoint || "");
+  const { APIs, debug } = getConfig();
+  const auth = APIs[api].auth;
+  const url = APIs[api].url + (endpoint || "");
   const safeMethods: methodType[] = ["GET", "HEAD", "OPTIONS"];
 
+  // --- REQUEST HEADERS ---
   const headers: headersType = {
+    ...APIs[api].headers,
     "content-type": "application/json",
   };
 
   // --- AUTH HEADER ---
   if (auth) {
-    const global = typeof auth === "object" && "token" in auth;
-    const scoped =
-      typeof auth === "object" &&
-      !("token" in auth) &&
-      (auth as Record<string, authType>)[api];
-
-    if (global) {
-      headers[String(auth.headerName || "Authorization")] =
-        `${auth.prefix || "Bearer"} ${auth.token}`;
-    } else if (scoped) {
-      headers[String(auth[api].headerName || "Authorization")] =
-        `${auth[api].prefix || "Bearer"} ${auth[api].token}`;
-    }
+    headers[String(auth.headerName || "Authorization")] =
+      `${auth.prefix || "Bearer"} ${auth.token}`;
   }
 
   // --- XSRF ---
   if (!safeMethods.includes(method) && options?.xsrf !== false) {
-    const token = getXsrfToken();
+    const token: string | null = getXsrfToken();
     if (!token) {
       debug && logWarn(t("Base:debug.xsrf"));
       return null;
@@ -143,10 +129,7 @@ async function request<T>(
 }
 
 /**
- * httpGet - Function for sending GET request;
- * @param api - API from config
- * @param endpoint - API endpoint
- * @param options - Request options, can contain body and signal
+ * Wrapper for request with GET method. See {@link request} for details.
  */
 export const httpGet = (
   api: apiType,

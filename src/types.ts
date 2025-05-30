@@ -47,11 +47,13 @@ export type ShapeRQHooks = {
   onRequest?: () => void;
   onResponse?: <T>(data: T) => void;
 };
-
+type ApiConfig = {
+  url: string;
+  headers?: headersType;
+  auth?: authType;
+};
 export interface ShapeRQConfig {
-  APIs: Record<string, string>;
-  auth?: authType | Record<string, authType>;
-  headers?: Record<string, string>;
+  APIs: Record<string, ApiConfig>;
   debug?: boolean;
   lang?: "ru" | "en";
 }

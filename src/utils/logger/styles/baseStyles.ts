@@ -3,12 +3,14 @@ export const baseStyles = {
     title: `font-weight: bold; font-size: 16px;`,
     message: `font-size: 12px;`,
     doc: `font-size: 11px;`,
+    simply: `font-weight: bold; font-size: 12px`
   },
   palette: {
     error: `#EF5350`,
     success: `#66BB6A`,
     info: `#42A5F5`,
     warn: `#FFA726`,
+    background: `#45454d`
   },
   block: `display: block; padding: 3px; border-radius: 3px; margin-top: 5px;`,
 };

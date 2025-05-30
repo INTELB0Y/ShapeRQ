@@ -19,14 +19,6 @@ export function setConfig(userConfig: Partial<ShapeRQConfig>) {
       ...config.APIs,
       ...userConfig.APIs,
     },
-    auth: {
-      ...config.auth,
-      ...userConfig.auth,
-    },
-    headers: {
-      ...config.headers,
-      ...userConfig.headers,
-    },
     lang: userConfig.lang || config.lang,
   };
 }
