@@ -64,10 +64,9 @@ async function request<T>(
   if (options?.cache?.type === "inMemory") {
     const data = inMemory.get(url) as T;
     if (data) {
-      if (debug) {
-        httpSuccessLog({ url, method, body: options?.body });
-        httpDataLog(data);
-      }
+      data &&
+        (httpSuccessLog({ url, method, body: options?.body }),
+        httpDataLog(data));
       return data;
     }
   }
@@ -89,8 +88,9 @@ async function request<T>(
         ? ((await response.json()) as T)
         : null;
       if (options?.cache?.type === "inMemory") {
-        inMemory.set(url, data);
-        inMemory.ttl(url, options?.cache?.ttl ?? 1);
+        data &&
+          (inMemory.set<T>(url, data),
+          inMemory.ttl(url, options?.cache?.ttl ?? 1000));
       }
 
       // --- Logs ---

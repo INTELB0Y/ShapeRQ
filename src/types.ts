@@ -28,7 +28,6 @@ export type optionsType = {
   xsrf?: boolean;
   signal?: AbortSignal | null;
   hooks?: ShapeRQHooks;
-  optionsCache?: optionsCache;
   cache?: optionsCache;
 };
 
