@@ -61,7 +61,7 @@ async function request<T>(
     debug && logWarn("onRequest threw error: " + (e as Error).message);
   }
 
-  if (options?.cache?.type === "inMemory") {
+  if (options?.cache?.type) {
     const data = inMemory.get(url) as T;
     if (data) {
       data &&
@@ -87,7 +87,7 @@ async function request<T>(
       const data = !["HEAD", "OPTIONS"].includes(method)
         ? ((await response.json()) as T)
         : null;
-      if (options?.cache?.type === "inMemory") {
+      if (options?.cache?.type) {
         data &&
           (inMemory.set<T>(url, data),
           inMemory.ttl(url, options?.cache?.ttl ?? 1000));

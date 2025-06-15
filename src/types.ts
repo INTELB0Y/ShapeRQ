@@ -19,7 +19,7 @@ export type bodyType = Record<string, any>;
 export type headersType = Record<string, string>;
 
 type optionsCache = {
-  type: "CacheAPI" | "inMemory";
+  type: boolean;
   ttl?: number;
 };
 
