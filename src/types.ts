@@ -18,11 +18,17 @@ export type bodyType = Record<string, any>;
 
 export type headersType = Record<string, string>;
 
+type optionsCache = {
+  type: boolean;
+  ttl?: number;
+};
+
 export type optionsType = {
   body?: bodyType;
   xsrf?: boolean;
   signal?: AbortSignal | null;
   hooks?: ShapeRQHooks;
+  cache?: optionsCache;
 };
 
 // Config types

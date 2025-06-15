@@ -12,6 +12,7 @@ import {
 } from "../utils/logger/logger";
 import { t } from "../locales/i18";
 import { getXsrfToken } from "./xsrfProtection";
+import { inMemory } from "../utils/cache/cache";
 
 /**
  * request - Function for sending requests to the API;
@@ -60,6 +61,16 @@ async function request<T>(
     debug && logWarn("onRequest threw error: " + (e as Error).message);
   }
 
+  if (options?.cache?.type) {
+    const data = inMemory.get(url) as T;
+    if (data) {
+      data &&
+        (httpSuccessLog({ url, method, body: options?.body }),
+        httpDataLog(data));
+      return data;
+    }
+  }
+
   // --- FETCH ---
   try {
     debug && logInfo(t("Base:info.start"));
@@ -76,6 +87,11 @@ async function request<T>(
       const data = !["HEAD", "OPTIONS"].includes(method)
         ? ((await response.json()) as T)
         : null;
+      if (options?.cache?.type) {
+        data &&
+          (inMemory.set<T>(url, data),
+          inMemory.ttl(url, options?.cache?.ttl ?? 1000));
+      }
 
       // --- Logs ---
       if (debug) {
