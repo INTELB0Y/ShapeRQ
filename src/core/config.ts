@@ -1,17 +1,17 @@
-import type { ShapeRQConfig } from "../types";
+import type { iShapeRQConfig } from "../types";
 
-let config: ShapeRQConfig = {
+let config: iShapeRQConfig = {
   APIs: {},
-  debug: false,
   lang: "en",
 };
 
 /**
  * setConfig - Function for setting configuration
- * @param userConfig - Your configuration
+ * @param userConfig - Your configuration as @iShapeRQConfig
+ * @see {@link iShapeRQConfig}
  */
 
-export function setConfig(userConfig: Partial<ShapeRQConfig>) {
+export function setConfig(userConfig: Partial<iShapeRQConfig>) {
   config = {
     ...config,
     ...userConfig,
@@ -23,6 +23,6 @@ export function setConfig(userConfig: Partial<ShapeRQConfig>) {
   };
 }
 
-export function getConfig(): ShapeRQConfig {
+export function getConfig(): iShapeRQConfig {
   return config;
 }

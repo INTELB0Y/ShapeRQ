@@ -8,7 +8,7 @@ import {
   blinkSuccessStyles,
   blinkDataStyles,
 } from "./styles/styles";
-import type { httpData, iStyles, methodType } from "../../types";
+import type { httpDataType, StylesType, methodType } from "../../types";
 
 const getBrowserEngine = () => {
   const userAgent = navigator.userAgent;
@@ -48,7 +48,7 @@ export function logInfo(msg: string): void {
 }
 
 export function httpDataLog(data: any): void {
-  const styles: iStyles =
+  const styles: StylesType =
     getBrowserEngine() === "gecko" ? geckoDataStyles : blinkDataStyles;
 
   const lines: string[] = [
@@ -65,8 +65,8 @@ export function logSuccess(msg: string): void {
   console.log(`%c[ShapeRQ] ✅ ${msg}`, simpleStyles.success);
 }
 
-export function httpSuccessLog(info: httpData): void {
-  const styles: iStyles =
+export function httpSuccessLog(info: httpDataType): void {
+  const styles: StylesType =
     getBrowserEngine() === "gecko" ? geckoSuccessStyles : blinkSuccessStyles;
 
   const lines: string[] = [
@@ -94,7 +94,7 @@ export function logError(msg: string): void {
 }
 
 export function httpErrLog(status: number): void {
-  let styles: iStyles =
+  let styles: StylesType =
     getBrowserEngine() === "gecko" ? geckoErrStyles : blinkErrStyles;
 
   const lines: string[] = [
@@ -115,7 +115,7 @@ export function httpErrLog(status: number): void {
 }
 
 export function NetworkErrLog(): void {
-  let styles: iStyles =
+  let styles: StylesType =
     getBrowserEngine() === "gecko" ? geckoErrStyles : blinkErrStyles;
 
   const lines = [

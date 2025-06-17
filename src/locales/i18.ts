@@ -20,8 +20,8 @@ function interpolate(str: string, vars?: Record<string, any>): string {
 }
 
 /**
- * @param key Строка типа "Debug:ключ.значение"
- * @param vars Переменные для подстановки в шаблон
+ * @param key String type "Debug:key.value"
+ * @param vars Optional variables for interpolation in the string
  */
 export function t(key: string, vars?: Record<string, any>): string {
   const [namespace, ...rest] = key.split(":");
