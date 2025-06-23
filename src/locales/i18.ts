@@ -9,10 +9,7 @@ function interpolate(str: string, vars?: Record<string, any>): string {
   if (!vars) return str;
   return str.replace(/\$\{([^}]+)\}/g, (_, expr) => {
     try {
-      return Function(
-        ...Object.keys(vars),
-        `return ${expr}`,
-      )(...Object.values(vars));
+      return Function(...Object.keys(vars), `return ${expr}`)(...Object.values(vars));
     } catch {
       return `[err:${expr}]`;
     }

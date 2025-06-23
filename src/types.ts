@@ -5,14 +5,7 @@ const APIs = getConfig().APIs;
 export type apiType = keyof typeof APIs;
 
 // Request types
-export type methodType =
-  | "GET"
-  | "POST"
-  | "PUT"
-  | "PATCH"
-  | "DELETE"
-  | "HEAD"
-  | "OPTIONS";
+export type methodType = "GET" | "POST" | "PUT" | "PATCH" | "DELETE" | "HEAD" | "OPTIONS";
 
 export type bodyType = Record<string, any> | FormData | string;
 
@@ -67,7 +60,7 @@ export interface iShapeRQHooks {
  * @typeParam `auth` - Optional authentication configuration
  */
 export type ApiConfigType = {
-  url: string;
+  baseUrl: string;
   headers?: headersType;
   auth?: authType;
 };
