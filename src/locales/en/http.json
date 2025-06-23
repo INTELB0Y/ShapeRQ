@@ -29,6 +29,11 @@
     "message": "The server timed out waiting for the request.",
     "doc": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/408"
   },
+  "415": {
+    "title": "415: Unsupported Media Type",
+    "message": "The server does not support the media type of the request payload.",
+    "doc": "https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/415"
+  },
   "422": {
     "title": "422: Unprocessable Entity",
     "message": "The server cannot process the request due to validation errors.",

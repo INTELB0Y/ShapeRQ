@@ -28,7 +28,6 @@ async function request<T>(
 ): Promise<T | null> {
   // --- Config ---
   const { APIs, debug } = getConfig();
-  console.log(APIs[api]);
   const auth = APIs[api]?.auth;
   const url = APIs[api]?.baseUrl + (endpoint || "");
 

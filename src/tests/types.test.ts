@@ -4,9 +4,3 @@ export type todo = {
   title: string;
   completed: boolean;
 };
-
-export type user = {
-  code: number;
-  type: string;
-  message: string;
-};
