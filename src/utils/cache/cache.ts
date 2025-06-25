@@ -7,9 +7,16 @@ export class inMemory {
   static get(url: string) {
     return this.#cache.get(url);
   }
+
+  static delete(url: string) {
+    this.#cache.delete(url);
+  }
+
   static ttl(url: string, time: number) {
     setTimeout(() => {
-      this.#cache.delete(url);
+      this.delete(url);
     }, time);
   }
 }
+
+export const cacheDel = (url: string) => inMemory.delete(url);

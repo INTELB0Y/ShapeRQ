@@ -9,10 +9,11 @@ import {
   NetworkErrLog,
   systemHttpLog,
   logError,
+  CacheDataLog,
 } from "../utils/logger/logger";
 import { t } from "../locales/i18";
 import { getXsrfToken } from "./xsrfProtection";
-import { inMemory } from "../utils/cache/cache";
+import { cacheDel, inMemory } from "../utils/cache/cache";
 
 /**
  * request - Function for sending requests to the API;
@@ -56,7 +57,10 @@ async function request<T>(
 
   // --- onRequest hook ---
   try {
-    options?.hooks?.onRequest?.();
+    options?.hooks?.onRequest?.({
+      url,
+      cacheDel,
+    });
   } catch (e) {
     debug && logWarn("onRequest threw error: " + (e as Error).message);
   }
@@ -66,7 +70,7 @@ async function request<T>(
     if (data) {
       data &&
         (httpSuccessLog({ url, method, body: options?.body }),
-        httpDataLog(data));
+        CacheDataLog(data));
       return data;
     }
   }

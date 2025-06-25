@@ -61,6 +61,20 @@ export function httpDataLog(data: any): void {
   console.info(lines.join("\n"), ...styleValues);
 }
 
+export function CacheDataLog(data: any): void {
+  const styles: iStyles =
+    getBrowserEngine() === "gecko" ? geckoDataStyles : blinkDataStyles;
+
+  const lines: string[] = [
+    `%cℹ️ ${t("Base:debug.cache")}`,
+    `%c${JSON.stringify(data, null, 2)}`,
+  ];
+
+  const styleValues = [styles.title, styles.message];
+
+  console.info(lines.join("\n"), ...styleValues);
+}
+
 export function logSuccess(msg: string): void {
   console.log(`%c[ShapeRQ] ✅ ${msg}`, simpleStyles.success);
 }

@@ -47,10 +47,14 @@ export type OnErrorParams = {
   aborted?: boolean;
   isNetworkError?: boolean;
 };
+type onRequestParams = {
+  url?: string;
+  cacheDel?: (url: string) => void;
+};
 
 export type ShapeRQHooks = {
   onError?: (params: OnErrorParams) => Promise<unknown | null> | unknown | null;
-  onRequest?: () => void;
+  onRequest?: (params: onRequestParams) => void;
   onResponse?: <T>(data: T) => void;
 };
 type ApiConfig = {
