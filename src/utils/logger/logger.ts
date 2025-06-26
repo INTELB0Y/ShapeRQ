@@ -61,7 +61,7 @@ export function httpDataLog(data: any): void {
   console.info(lines.join("\n"), ...styleValues);
 }
 
-export function CacheDataLog(data: any): void {
+export function сacheDataLog(data: any): void {
   const styles: iStyles =
     getBrowserEngine() === "gecko" ? geckoDataStyles : blinkDataStyles;
 
@@ -85,6 +85,26 @@ export function httpSuccessLog(info: httpData): void {
 
   const lines: string[] = [
     `%c✅ ${t("Base:debug.success")}\n` +
+      `%c${info.url}\n` +
+      `${info.method}\n` +
+      `%c${info.body ? t("Base:debug.body") + "\n" + JSON.stringify(info.body, null, 2) : ""}`,
+  ];
+
+  const styleValues: string[] = [
+    styles.title,
+    styles.message,
+    styles.body ?? "",
+  ];
+
+  console.log(lines.join("\n"), ...styleValues);
+}
+
+export function cacheSuccessLog(info: httpData): void {
+  const styles: iStyles =
+    getBrowserEngine() === "gecko" ? geckoSuccessStyles : blinkSuccessStyles;
+
+  const lines: string[] = [
+    `%c✅ ${t("Base:debug.cacheSuccess")}\n` +
       `%c${info.url}\n` +
       `${info.method}\n` +
       `%c${info.body ? t("Base:debug.body") + "\n" + JSON.stringify(info.body, null, 2) : ""}`,

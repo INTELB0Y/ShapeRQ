@@ -9,7 +9,8 @@ import {
   NetworkErrLog,
   systemHttpLog,
   logError,
-  CacheDataLog,
+  сacheDataLog,
+  cacheSuccessLog,
 } from "../utils/logger/logger";
 import { t } from "../locales/i18";
 import { getXsrfToken } from "./xsrfProtection";
@@ -65,12 +66,14 @@ async function request<T>(
     debug && logWarn("onRequest threw error: " + (e as Error).message);
   }
 
-  if (options?.cache?.type) {
+  if (options?.cache) {
     const data = inMemory.get(url) as T;
     if (data) {
-      data &&
-        (httpSuccessLog({ url, method, body: options?.body }),
-        CacheDataLog(data));
+      if (debug) {
+        data &&
+          (cacheSuccessLog({ url, method, body: options?.body }),
+          сacheDataLog(data));
+      }
       return data;
     }
   }
@@ -91,10 +94,14 @@ async function request<T>(
       const data = !["HEAD", "OPTIONS"].includes(method)
         ? ((await response.json()) as T)
         : null;
-      if (options?.cache?.type) {
-        data &&
-          (inMemory.set<T>(url, data),
-          inMemory.ttl(url, options?.cache?.ttl ?? 1000));
+
+      if (options?.cache) {
+        if (data) {
+          inMemory.set<T>(url, data);
+          if (options?.cache !== true) {
+            inMemory.ttl(url, options?.cache?.ttl ?? 1000);
+          }
+        }
       }
 
       // --- Logs ---
