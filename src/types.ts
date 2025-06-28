@@ -11,6 +11,10 @@ export type bodyType = Record<string, any> | FormData | string;
 
 export type headersType = Record<string, string>;
 
+type optionsCache = {
+  ttl?: number;
+};
+
 /**
  * @typeParam `body` - Request body can be an object, FormData, or string
  * @typeParam `headers` - Optional headers for the request
@@ -24,6 +28,7 @@ export type optionsType = {
   xsrf?: boolean;
   signal?: AbortSignal | null;
   hooks?: iShapeRQHooks;
+  cache?: optionsCache | true | undefined;
 };
 
 // Config types
@@ -47,11 +52,15 @@ export type OnErrorParams = {
   aborted?: boolean;
   isNetworkError?: boolean;
 };
+type onRequestParams = {
+  url?: string;
+  cacheDel?: (url: string) => void;
+};
 
 export interface iShapeRQHooks {
   onError?: (params: OnErrorParams) => Promise<unknown | null> | unknown | null;
-  onRequest?: () => void | Promise<unknown>;
-  onResponse?: (data: unknown) => void | Promise<unknown>;
+  onRequest?: (params: onRequestParams) => void;
+  onResponse?: <T>(data: T) => void;
 }
 
 /**

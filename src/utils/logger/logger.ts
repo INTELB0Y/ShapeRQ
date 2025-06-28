@@ -48,6 +48,16 @@ export function httpDataLog(data: any): void {
   console.info(lines.join("\n"), ...styleValues);
 }
 
+export function cacheDataLog(data: any): void {
+  const styles: iStyles = getBrowserEngine() === "gecko" ? geckoDataStyles : blinkDataStyles;
+
+  const lines: string[] = [`%cℹ️ ${t("Base:debug.cache")}`, `%c${JSON.stringify(data, null, 2)}`];
+
+  const styleValues = [styles.title, styles.message];
+
+  console.info(lines.join("\n"), ...styleValues);
+}
+
 export function logSuccess(msg: string): void {
   console.log(`%c[ShapeRQ] ✅ ${msg}`, simpleStyles.success);
 }
@@ -58,6 +68,21 @@ export function httpSuccessLog(info: httpDataType): void {
 
   const lines: string[] = [
     `%c✅ ${t("Base:debug.success")}\n` +
+      `%c${info.url}\n` +
+      `${info.method}\n` +
+      `%c${info.body ? t("Base:debug.body") + "\n" + JSON.stringify(info.body, null, 2) : ""}`,
+  ];
+
+  const styleValues: string[] = [styles.title, styles.message, styles.body ?? ""];
+
+  console.log(lines.join("\n"), ...styleValues);
+}
+
+export function cacheSuccessLog(info: httpData): void {
+  const styles: iStyles = getBrowserEngine() === "gecko" ? geckoSuccessStyles : blinkSuccessStyles;
+
+  const lines: string[] = [
+    `%c✅ ${t("Base:debug.cacheSuccess")}\n` +
       `%c${info.url}\n` +
       `${info.method}\n` +
       `%c${info.body ? t("Base:debug.body") + "\n" + JSON.stringify(info.body, null, 2) : ""}`,

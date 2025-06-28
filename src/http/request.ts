@@ -9,9 +9,12 @@ import {
   NetworkErrLog,
   systemHttpLog,
   logError,
+  cacheDataLog,
+  cacheSuccessLog,
 } from "../utils/logger/logger";
 import { t } from "../locales/i18";
 import { getXsrfToken } from "./xsrfProtection";
+import { cacheDel, inMemory } from "../utils/cache/cache";
 
 /**
  * Function for sending requests to the API;
@@ -64,9 +67,24 @@ async function request<T>(
 
   // --- onRequest hook ---
   try {
-    options?.hooks?.onRequest?.();
+    options?.hooks?.onRequest?.({
+      url,
+      cacheDel,
+    });
   } catch (e) {
     debug && logWarn("onRequest threw error: " + (e as Error).message);
+  }
+
+  if (options?.cache) {
+    const data = inMemory.get(url) as T;
+    if (data) {
+      if (debug) {
+        data && cacheSuccessLog({ url, method, body: options?.body });
+        cacheDataLog(data);
+
+        return data;
+      }
+    }
   }
 
   // --- FETCH ---
@@ -83,6 +101,16 @@ async function request<T>(
       const data = !["HEAD", "OPTIONS"].includes(method) ? ((await response.json()) as T) : null;
 
       // --- LOGS ---
+      if (options?.cache) {
+        if (data) {
+          inMemory.set<T>(url, data);
+          if (options?.cache !== true) {
+            inMemory.ttl(url, options?.cache?.ttl ?? 1000);
+          }
+        }
+      }
+
+      // --- Logs ---
       if (debug) {
         logInfo(t("Base:info.complete"));
         if (["HEAD", "OPTIONS"].includes(method)) {
@@ -96,7 +124,7 @@ async function request<T>(
       // --- onResponse hook ---
       options?.hooks?.onResponse?.(data as T);
 
-      return data;
+      return data as T;
     } else {
       debug && httpErrLog(response.status);
       // noinspection ExceptionCaughtLocallyJS
