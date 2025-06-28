@@ -26,14 +26,13 @@ describe("ShapeRQ requests tests", () => {
       completed: false,
     };
     expect(await httpGet<todo>("Main", "/todos/1")).toStrictEqual(resp);
-  })
+  });
 
   it("httpGet request fails", async () => {
     expect(await httpGet<todo>("Main", "/error/404")).toBeNull();
-  })
+  });
 
   it("httpPost test", async () => {
-
     const body = {
       userId: 1,
       id: 1,
@@ -42,5 +41,5 @@ describe("ShapeRQ requests tests", () => {
     };
 
     expect(await httpPost<{ id: number }>("Main", "/posts", { body })).toStrictEqual({ id: 101 });
-  })
-})
+  });
+});
