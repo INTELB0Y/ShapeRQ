@@ -9,9 +9,12 @@ import {
   NetworkErrLog,
   systemHttpLog,
   logError,
+  сacheDataLog,
+  cacheSuccessLog,
 } from "../utils/logger/logger";
 import { t } from "../locales/i18";
 import { getXsrfToken } from "./xsrfProtection";
+import { cacheDel, inMemory } from "../utils/cache/cache";
 
 /**
  * request - Function for sending requests to the API;
@@ -55,9 +58,24 @@ async function request<T>(
 
   // --- onRequest hook ---
   try {
-    options?.hooks?.onRequest?.();
+    options?.hooks?.onRequest?.({
+      url,
+      cacheDel,
+    });
   } catch (e) {
     debug && logWarn("onRequest threw error: " + (e as Error).message);
+  }
+
+  if (options?.cache) {
+    const data = inMemory.get(url) as T;
+    if (data) {
+      if (debug) {
+        data &&
+          (cacheSuccessLog({ url, method, body: options?.body }),
+          сacheDataLog(data));
+      }
+      return data;
+    }
   }
 
   // --- FETCH ---
@@ -76,6 +94,15 @@ async function request<T>(
       const data = !["HEAD", "OPTIONS"].includes(method)
         ? ((await response.json()) as T)
         : null;
+
+      if (options?.cache) {
+        if (data) {
+          inMemory.set<T>(url, data);
+          if (options?.cache !== true) {
+            inMemory.ttl(url, options?.cache?.ttl ?? 1000);
+          }
+        }
+      }
 
       // --- Logs ---
       if (debug) {

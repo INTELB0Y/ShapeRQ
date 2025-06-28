@@ -18,11 +18,16 @@ export type bodyType = Record<string, any>;
 
 export type headersType = Record<string, string>;
 
+type optionsCache = {
+  ttl?: number;
+};
+
 export type optionsType = {
   body?: bodyType;
   xsrf?: boolean;
   signal?: AbortSignal | null;
   hooks?: ShapeRQHooks;
+  cache?: optionsCache | true | undefined;
 };
 
 // Config types
@@ -41,10 +46,14 @@ export type OnErrorParams = {
   aborted?: boolean;
   isNetworkError?: boolean;
 };
+type onRequestParams = {
+  url?: string;
+  cacheDel?: (url: string) => void;
+};
 
 export type ShapeRQHooks = {
   onError?: (params: OnErrorParams) => Promise<unknown | null> | unknown | null;
-  onRequest?: () => void;
+  onRequest?: (params: onRequestParams) => void;
   onResponse?: <T>(data: T) => void;
 };
 type ApiConfig = {
