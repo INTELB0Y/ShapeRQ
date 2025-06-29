@@ -5,6 +5,7 @@
   "main": "dist/index.cjs",
   "module": "dist/index.js",
   "types": "dist/index.d.ts",
+  "license": "MIT",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -43,8 +44,10 @@
     "open-source"
   ],
   "devDependencies": {
+    "prettier": "3.6.0",
     "typescript": "~5.8.3",
-    "vite": "^6.3.5"
+    "vite": "^6.3.5",
+    "vitest": "3.2.4"
   },
   "dependencies": {
     "vite-plugin-dts": "^4.5.4"

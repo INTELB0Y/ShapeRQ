@@ -9,7 +9,7 @@ import {
   NetworkErrLog,
   systemHttpLog,
   logError,
-  сacheDataLog,
+  cacheDataLog,
   cacheSuccessLog,
 } from "../utils/logger/logger";
 import { t } from "../locales/i18";
@@ -17,11 +17,11 @@ import { getXsrfToken } from "./xsrfProtection";
 import { cacheDel, inMemory } from "../utils/cache/cache";
 
 /**
- * request - Function for sending requests to the API;
- * @param method - request method, GET, POST, PUT, PATCH, DELETE, HEAD, OPTIONS
- * @param api - API from config
- * @param endpoint - API endpoint
- * @param options - options for the request, contain body and signal
+ * Function for sending requests to the API;
+ * @param `method` - request method, GET, POST, PUT, PATCH, DELETE, HEAD, OPTIONS
+ * @param `api` - API from config
+ * @param `endpoint` - API endpoint
+ * @param `options` - options for the request, contain body, headers, xsrf, signal, hooks
  */
 async function request<T>(
   method: methodType,
@@ -29,31 +29,40 @@ async function request<T>(
   endpoint?: string,
   options?: optionsType,
 ): Promise<T | null> {
+  // --- Config ---
   const { APIs, debug } = getConfig();
-  const auth = APIs[api].auth;
-  const url = APIs[api].url + (endpoint || "");
+  const auth = APIs[api]?.auth;
+  const url = APIs[api]?.baseUrl + (endpoint || "");
+
+  // --- Validation ---
   const safeMethods: methodType[] = ["GET", "HEAD", "OPTIONS"];
+  const body = options?.body instanceof FormData ? options?.body : JSON.stringify(options?.body);
+  const contentType =
+    options?.body instanceof FormData ? "multipart/form-data" : "application/json";
 
   // --- REQUEST HEADERS ---
   const headers: headersType = {
-    ...APIs[api].headers,
-    "content-type": "application/json",
+    ...options?.headers,
+    ...APIs[api]?.headers,
+    contentType,
   };
 
   // --- AUTH HEADER ---
-  if (auth) {
+  if (auth?.token()) {
     headers[String(auth.headerName || "Authorization")] =
-      `${auth.prefix || "Bearer"} ${auth.token}`;
+      `${auth.prefix || "Bearer"} ${auth.token()}`;
   }
 
   // --- XSRF ---
   if (!safeMethods.includes(method) && options?.xsrf !== false) {
-    const token: string | null = getXsrfToken();
-    if (!token) {
-      debug && logWarn(t("Base:debug.xsrf"));
-      return null;
+    if (typeof document !== "undefined") {
+      const token: string | null = getXsrfToken();
+      if (!token) {
+        debug && logWarn(t("Base:debug.xsrf"));
+        return null;
+      }
+      headers["X-CSRFToken"] = token;
     }
-    headers["X-CSRFToken"] = token;
   }
 
   // --- onRequest hook ---
@@ -70,11 +79,11 @@ async function request<T>(
     const data = inMemory.get(url) as T;
     if (data) {
       if (debug) {
-        data &&
-          (cacheSuccessLog({ url, method, body: options?.body }),
-          сacheDataLog(data));
+        data && cacheSuccessLog({ url, method, body: options?.body });
+        cacheDataLog(data);
+
+        return data;
       }
-      return data;
     }
   }
 
@@ -84,17 +93,14 @@ async function request<T>(
     const response = await fetch(url, {
       method,
       headers,
-      body: !["GET", "DELETE", "HEAD", "OPTIONS"].includes(method)
-        ? JSON.stringify(options?.body)
-        : null,
+      body: !["GET", "DELETE", "HEAD", "OPTIONS"].includes(method) ? body : null,
       signal: options?.signal,
     });
 
     if (response.ok) {
-      const data = !["HEAD", "OPTIONS"].includes(method)
-        ? ((await response.json()) as T)
-        : null;
+      const data = !["HEAD", "OPTIONS"].includes(method) ? ((await response.json()) as T) : null;
 
+      // --- LOGS ---
       if (options?.cache) {
         if (data) {
           inMemory.set<T>(url, data);
@@ -118,9 +124,10 @@ async function request<T>(
       // --- onResponse hook ---
       options?.hooks?.onResponse?.(data as T);
 
-      return data;
+      return data as T;
     } else {
       debug && httpErrLog(response.status);
+      // noinspection ExceptionCaughtLocallyJS
       throw response;
     }
   } catch (err: any) {
@@ -158,61 +165,40 @@ async function request<T>(
 /**
  * Wrapper for request with GET method. See {@link request} for details.
  */
-export const httpGet = (
-  api: apiType,
-  endpoint: string,
-  options?: optionsType,
-) => request("GET", api, endpoint, options);
+export const httpGet = <T>(api: apiType, endpoint?: string, options?: optionsType) =>
+  request<T>("GET", api, endpoint, options);
 
 /**
  * Wrapper for request with DELETE method. See {@link request} for details.
  */
-export const httpDel = (
-  api: apiType,
-  endpoint: string,
-  options?: optionsType,
-) => request("DELETE", api, endpoint, options);
+export const httpDel = <T>(api: apiType, endpoint?: string, options?: optionsType) =>
+  request<T>("DELETE", api, endpoint, options);
 
 /**
  * Wrapper for request with HEAD method. See {@link request} for details.
  */
-export const httpHead = (
-  api: apiType,
-  endpoint: string,
-  options?: optionsType,
-) => request("HEAD", api, endpoint, options);
+export const httpHead = <T>(api: apiType, endpoint?: string, options?: optionsType) =>
+  request<T>("HEAD", api, endpoint, options);
 
 /**
  * Wrapper for request with OPTIONS method. See {@link request} for details.
  */
-export const httpOpt = (
-  api: apiType,
-  endpoint: string,
-  options?: optionsType,
-) => request("OPTIONS", api, endpoint, options);
+export const httpOpt = <T>(api: apiType, endpoint?: string, options?: optionsType) =>
+  request<T>("OPTIONS", api, endpoint, options);
 
 /**
  * Wrapper for request with POST method. See {@link request} for details.
  */
-export const httpPost = (
-  api: apiType,
-  endpoint: string,
-  options?: optionsType,
-) => request("POST", api, endpoint, options);
+export const httpPost = <T>(api: apiType, endpoint?: string, options?: optionsType) =>
+  request<T>("POST", api, endpoint, options);
 /**
  * Wrapper for request with PUT method. See {@link request} for details.
  */
-export const httpPut = (
-  api: apiType,
-  endpoint: string,
-  options?: optionsType,
-) => request("PUT", api, endpoint, options);
+export const httpPut = <T>(api: apiType, endpoint?: string, options?: optionsType) =>
+  request<T>("PUT", api, endpoint, options);
 
 /**
  * Wrapper for request with PATCH method. See {@link request} for details.
  */
-export const httpPatch = (
-  api: apiType,
-  endpoint: string,
-  options?: optionsType,
-) => request("PATCH", api, endpoint, options);
+export const httpPatch = <T>(api: apiType, endpoint?: string, options?: optionsType) =>
+  request<T>("PATCH", api, endpoint, options);

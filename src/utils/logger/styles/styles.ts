@@ -1,26 +1,26 @@
-import type { iStyles, iSimpleStyles } from "../../../types";
+import type { StylesType, SimpleStylesType } from "../../../types";
 import { baseStyles, sucBaseStyles, errBaseStyles } from "./baseStyles";
 // Simple styles
-export const simpleStyles: iSimpleStyles = {
-  info: `color: #42A5F5; ${baseStyles.font.simply}`,
-  success: `color: #66BB6A; ${baseStyles.font.simply}`,
-  warn: `color: #FFA726; ${baseStyles.font.simply}`,
-  error: `color: #EF5350; ${baseStyles.font.simply}`,
+export const simpleStyles: SimpleStylesType = {
+  info: `color: ${baseStyles.palette.info}; ${baseStyles.font.simply}`,
+  success: `color: ${baseStyles.palette.success}; ${baseStyles.font.simply}`,
+  warn: `color: ${baseStyles.palette.warn}; ${baseStyles.font.simply}`,
+  error: `color: ${baseStyles.palette.error}; ${baseStyles.font.simply}`,
 };
 
 // Data styles
-export const geckoDataStyles: iStyles = {
+export const geckoDataStyles: StylesType = {
   title: `color: ${baseStyles.palette.info}; ${baseStyles.font.title}`,
   message: `color: ${baseStyles.palette.info}; border: 1px solid ${baseStyles.palette.info}; background-color: ${baseStyles.palette.background}; font-style: italic; ${baseStyles.block}`,
 };
 
-export const blinkDataStyles: iStyles = {
+export const blinkDataStyles: StylesType = {
   title: `color: ${baseStyles.palette.info}; ${baseStyles.font.title}`,
   message: `color: ${baseStyles.palette.info}; font-style: italic; margin-top: 4px`,
 };
 
 // Styles for successful requests
-export const geckoSuccessStyles: iStyles = {
+export const geckoSuccessStyles: StylesType = {
   title: sucBaseStyles.title,
   message:
     sucBaseStyles.message +
@@ -30,14 +30,14 @@ export const geckoSuccessStyles: iStyles = {
     `border: 1px solid ${baseStyles.palette.success}; color: ${baseStyles.palette.success}; ${baseStyles.block} background-color: ${baseStyles.palette.background}; `,
 };
 
-export const blinkSuccessStyles: iStyles = {
+export const blinkSuccessStyles: StylesType = {
   title: sucBaseStyles.title,
   message: sucBaseStyles.message,
   body: sucBaseStyles.body,
 };
 
 // Error styles
-export const geckoErrStyles: iStyles = {
+export const geckoErrStyles: StylesType = {
   title: errBaseStyles.title,
   message:
     errBaseStyles.message +
@@ -46,7 +46,7 @@ export const geckoErrStyles: iStyles = {
   doc: errBaseStyles.doc,
 };
 
-export const blinkErrStyles: iStyles = {
+export const blinkErrStyles: StylesType = {
   title: errBaseStyles.title,
   message: errBaseStyles.message,
   doc:
