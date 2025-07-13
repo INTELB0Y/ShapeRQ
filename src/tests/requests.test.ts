@@ -2,7 +2,7 @@ import { expect, describe, it } from "vitest";
 
 import { httpGet, httpPost } from "../http/request";
 import { setConfig } from "../core/config";
-import type { todo } from "./types.test";
+import type { todo } from "./test-types";
 
 const testConfig = () => {
   setConfig({
