@@ -53,7 +53,7 @@ export type OnErrorParams = {
   isNetworkError?: boolean;
 };
 type onRequestParams = {
-  url?: string;
+  url: string;
   cacheDel: (url: string) => void;
 };
 
