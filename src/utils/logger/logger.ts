@@ -49,7 +49,7 @@ export function httpDataLog(data: any): void {
 }
 
 export function cacheDataLog(data: any): void {
-  const styles: iStyles = getBrowserEngine() === "gecko" ? geckoDataStyles : blinkDataStyles;
+  const styles: StylesType = getBrowserEngine() === "gecko" ? geckoDataStyles : blinkDataStyles;
 
   const lines: string[] = [`%cℹ️ ${t("Base:debug.cache")}`, `%c${JSON.stringify(data, null, 2)}`];
 
@@ -78,8 +78,9 @@ export function httpSuccessLog(info: httpDataType): void {
   console.log(lines.join("\n"), ...styleValues);
 }
 
-export function cacheSuccessLog(info: httpData): void {
-  const styles: iStyles = getBrowserEngine() === "gecko" ? geckoSuccessStyles : blinkSuccessStyles;
+export function cacheSuccessLog(info: httpDataType): void {
+  const styles: StylesType =
+    getBrowserEngine() === "gecko" ? geckoSuccessStyles : blinkSuccessStyles;
 
   const lines: string[] = [
     `%c✅ ${t("Base:debug.cacheSuccess")}\n` +

@@ -54,7 +54,7 @@ export type OnErrorParams = {
 };
 type onRequestParams = {
   url?: string;
-  cacheDel?: (url: string) => void;
+  cacheDel: (url: string) => void;
 };
 
 export interface iShapeRQHooks {
