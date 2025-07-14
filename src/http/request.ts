@@ -1,16 +1,16 @@
 import type { methodType, headersType, apiType, optionsType } from "../types";
 import { getConfig } from "../core/config";
 import {
-  logWarn,
-  logInfo,
-  httpErrLog,
+  _logWarn,
+  _logInfo,
+  _httpErrLog,
   httpDataLog,
-  httpSuccessLog,
-  NetworkErrLog,
-  systemHttpLog,
-  logError,
-  cacheDataLog,
-  cacheSuccessLog,
+  _httpSuccessLog,
+  _NetworkErrLog,
+  _systemHttpLog,
+  _logError,
+  _cacheDataLog,
+  _cacheSuccessLog,
 } from "../utils/logger/logger";
 import { t } from "../locales/i18";
 import { getXsrfToken } from "./xsrfProtection";
@@ -22,8 +22,9 @@ import { cacheDel, inMemory } from "../utils/cache/cache";
  * @param `api` - API from config
  * @param `endpoint` - API endpoint
  * @param `options` - options for the request, contain body, headers, xsrf, signal, hooks
+ * @internal
  */
-async function request<T>(
+async function _request<T>(
   method: methodType,
   api: apiType,
   endpoint?: string,
@@ -58,7 +59,7 @@ async function request<T>(
     if (typeof document !== "undefined") {
       const token: string | null = getXsrfToken();
       if (!token) {
-        debug && logWarn(t("Base:debug.xsrf"));
+        debug && _logWarn(t("Base:debug.xsrf"));
         return null;
       }
       headers["X-CSRFToken"] = token;
@@ -72,15 +73,15 @@ async function request<T>(
       cacheDel,
     });
   } catch (e) {
-    debug && logWarn("onRequest threw error: " + (e as Error).message);
+    debug && _logWarn("onRequest threw error: " + (e as Error).message);
   }
 
   if (options?.cache) {
     const data = inMemory.get(url) as T;
     if (data) {
       if (debug) {
-        data && cacheSuccessLog({ url, method, body: options?.body });
-        cacheDataLog(data);
+        data && _cacheSuccessLog({ url, method, body: options?.body });
+        _cacheDataLog(data);
 
         return data;
       }
@@ -89,7 +90,7 @@ async function request<T>(
 
   // --- FETCH ---
   try {
-    debug && logInfo(t("Base:info.start"));
+    debug && _logInfo(t("Base:info.start"));
     const response = await fetch(url, {
       method,
       headers,
@@ -112,12 +113,12 @@ async function request<T>(
 
       // --- Logs ---
       if (debug) {
-        logInfo(t("Base:info.complete"));
+        _logInfo(t("Base:info.complete"));
         if (["HEAD", "OPTIONS"].includes(method)) {
-          systemHttpLog(response, method, url);
+          _systemHttpLog(response, method, url);
         } else {
-          httpSuccessLog({ url, method, body: options?.body });
-          data ? httpDataLog(data) : logWarn(t("Base:debug.empty"));
+          _httpSuccessLog({ url, method, body: options?.body });
+          data ? httpDataLog(data) : _logWarn(t("Base:debug.empty"));
         }
       }
 
@@ -126,22 +127,22 @@ async function request<T>(
 
       return data as T;
     } else {
-      debug && httpErrLog(response.status);
+      debug && _httpErrLog(response.status);
       // noinspection ExceptionCaughtLocallyJS
       throw response;
     }
   } catch (err: any) {
     if (debug) {
       if (err instanceof Error && err.name === "AbortError") {
-        logError(`${t("Base:debug.abort")}`);
+        _logError(`${t("Base:debug.abort")}`);
       } else if (!(err instanceof Response)) {
-        NetworkErrLog();
+        _NetworkErrLog();
       }
     }
 
     // --- onError hook ---
     try {
-      const retry = () => request<T>(method, api, endpoint, options);
+      const retry = () => _request<T>(method, api, endpoint, options);
 
       const result = await options?.hooks?.onError?.({
         error: err,
@@ -155,7 +156,7 @@ async function request<T>(
 
       if (result) return result as T;
     } catch (hookErr) {
-      debug && logWarn("onError threw error: " + (hookErr as Error).message);
+      debug && _logWarn("onError threw error: " + (hookErr as Error).message);
     }
 
     return null;
@@ -163,42 +164,42 @@ async function request<T>(
 }
 
 /**
- * Wrapper for request with GET method. See {@link request} for details.
+ * Wrapper for request with GET method. See {@link _request} for details.
  */
 export const httpGet = <T>(api: apiType, endpoint?: string, options?: optionsType) =>
-  request<T>("GET", api, endpoint, options);
+  _request<T>("GET", api, endpoint, options);
 
 /**
- * Wrapper for request with DELETE method. See {@link request} for details.
+ * Wrapper for request with DELETE method. See {@link _request} for details.
  */
 export const httpDel = <T>(api: apiType, endpoint?: string, options?: optionsType) =>
-  request<T>("DELETE", api, endpoint, options);
+  _request<T>("DELETE", api, endpoint, options);
 
 /**
- * Wrapper for request with HEAD method. See {@link request} for details.
+ * Wrapper for request with HEAD method. See {@link _request} for details.
  */
 export const httpHead = <T>(api: apiType, endpoint?: string, options?: optionsType) =>
-  request<T>("HEAD", api, endpoint, options);
+  _request<T>("HEAD", api, endpoint, options);
 
 /**
- * Wrapper for request with OPTIONS method. See {@link request} for details.
+ * Wrapper for request with OPTIONS method. See {@link _request} for details.
  */
 export const httpOpt = <T>(api: apiType, endpoint?: string, options?: optionsType) =>
-  request<T>("OPTIONS", api, endpoint, options);
+  _request<T>("OPTIONS", api, endpoint, options);
 
 /**
- * Wrapper for request with POST method. See {@link request} for details.
+ * Wrapper for request with POST method. See {@link _request} for details.
  */
 export const httpPost = <T>(api: apiType, endpoint?: string, options?: optionsType) =>
-  request<T>("POST", api, endpoint, options);
+  _request<T>("POST", api, endpoint, options);
 /**
- * Wrapper for request with PUT method. See {@link request} for details.
+ * Wrapper for request with PUT method. See {@link _request} for details.
  */
 export const httpPut = <T>(api: apiType, endpoint?: string, options?: optionsType) =>
-  request<T>("PUT", api, endpoint, options);
+  _request<T>("PUT", api, endpoint, options);
 
 /**
- * Wrapper for request with PATCH method. See {@link request} for details.
+ * Wrapper for request with PATCH method. See {@link _request} for details.
  */
 export const httpPatch = <T>(api: apiType, endpoint?: string, options?: optionsType) =>
-  request<T>("PATCH", api, endpoint, options);
+  _request<T>("PATCH", api, endpoint, options);

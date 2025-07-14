@@ -102,7 +102,6 @@ export type StylesType = {
 
 export type SimpleStylesType = {
   info: string;
-  success: string;
   warn: string;
   error: string;
 };

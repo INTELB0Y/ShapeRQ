@@ -1,6 +1,6 @@
 {
   "name": "shape-rq",
-  "version": "1.2.2",
+  "version": "2.0.0-beta.01",
   "type": "module",
   "main": "dist/index.cjs",
   "module": "dist/index.js",
@@ -46,7 +46,7 @@
   "devDependencies": {
     "prettier": "3.6.0",
     "typescript": "~5.8.3",
-    "vite": "^6.3.5",
+    "vite": "^7.0.4",
     "vitest": "3.2.4"
   },
   "dependencies": {

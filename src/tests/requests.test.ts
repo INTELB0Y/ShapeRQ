@@ -2,7 +2,7 @@ import { expect, describe, it } from "vitest";
 
 import { httpGet, httpPost } from "../http/request";
 import { setConfig } from "../core/config";
-import type { todo } from "./test-types";
+import type { testTodo } from "./test-types";
 import type { iShapeRQHooks } from "../types";
 
 const testConfig = () => {
@@ -20,17 +20,17 @@ describe("ShapeRQ requests tests", () => {
   testConfig();
 
   it("httpGet request test", async () => {
-    const resp: todo = {
+    const resp: testTodo = {
       userId: 1,
       id: 1,
       title: "delectus aut autem",
       completed: false,
     };
-    expect(await httpGet<todo>("Main", "/todos/1")).toStrictEqual(resp);
+    expect(await httpGet<testTodo>("Main", "/todos/1")).toStrictEqual(resp);
   });
 
   it("httpGet request fails", async () => {
-    expect(await httpGet<todo>("Main", "/error/404")).toBeNull();
+    expect(await httpGet<testTodo>("Main", "/error/404")).toBeNull();
   });
 
   it("httpPost test", async () => {
@@ -54,6 +54,6 @@ describe("ShapeRQ requests tests", () => {
         }
       },
     };
-    expect(await httpGet<todo>("Main", "/todos/0", { hooks: hook })).toStrictEqual(null);
+    expect(await httpGet<testTodo>("Main", "/todos/0", { hooks: hook })).toStrictEqual(null);
   });
 });
