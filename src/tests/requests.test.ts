@@ -2,7 +2,8 @@ import { expect, describe, it } from "vitest";
 
 import { httpGet, httpPost } from "../http/request";
 import { setConfig } from "../core/config";
-import type { todo } from "./types.test";
+import type { todo } from "./test-types";
+import type { iShapeRQHooks } from "../types";
 
 const testConfig = () => {
   setConfig({
@@ -41,5 +42,18 @@ describe("ShapeRQ requests tests", () => {
     };
 
     expect(await httpPost<{ id: number }>("Main", "/posts", { body })).toStrictEqual({ id: 101 });
+  });
+
+  it("httpGet retry test", async () => {
+    let retryCount = 0;
+    const hook: iShapeRQHooks = {
+      onError: async ({ retry }) => {
+        if (retryCount < 2) {
+          retryCount++;
+          return await retry();
+        }
+      },
+    };
+    expect(await httpGet<todo>("Main", "/todos/0", { hooks: hook })).toStrictEqual(null);
   });
 });

@@ -53,8 +53,8 @@ export type OnErrorParams = {
   isNetworkError?: boolean;
 };
 type onRequestParams = {
-  url?: string;
-  cacheDel?: (url: string) => void;
+  url: string;
+  cacheDel: (url: string) => void;
 };
 
 export interface iShapeRQHooks {
