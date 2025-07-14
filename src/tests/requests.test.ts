@@ -3,7 +3,7 @@ import { expect, describe, it } from "vitest";
 import { httpGet, httpPost } from "../http/request";
 import { setConfig } from "../core/config";
 import type { todo } from "./test-types";
-import { iShapeRQHooks } from "../types";
+import type { iShapeRQHooks } from "../types";
 
 const testConfig = () => {
   setConfig({
