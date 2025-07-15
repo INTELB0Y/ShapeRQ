@@ -1,16 +1,16 @@
 import type { methodType, headersType, apiType, optionsType } from "../types";
 import { getConfig } from "../core/config";
 import {
-  _logWarn,
-  _logInfo,
-  _httpErrLog,
+  logWarn,
+  logInfo,
+  httpErrLog,
   httpDataLog,
-  _httpSuccessLog,
-  _NetworkErrLog,
-  _systemHttpLog,
-  _logError,
-  _cacheDataLog,
-  _cacheSuccessLog,
+  httpSuccessLog,
+  NetworkErrLog,
+  systemHttpLog,
+  logError,
+  cacheDataLog,
+  cacheSuccessLog,
 } from "../utils/logger/logger";
 import { t } from "../locales/i18";
 import { getXsrfToken } from "./xsrfProtection";
@@ -45,7 +45,7 @@ async function _request<T>(
   const headers: headersType = {
     ...options?.headers,
     ...APIs[api]?.headers,
-    contentType,
+    "Content-Type": contentType,
   };
 
   // --- AUTH HEADER ---
@@ -59,7 +59,7 @@ async function _request<T>(
     if (typeof document !== "undefined") {
       const token: string | null = getXsrfToken();
       if (!token) {
-        debug && _logWarn(t("Base:debug.xsrf"));
+        debug && logWarn(t("Base:debug.xsrf"));
         return null;
       }
       headers["X-CSRFToken"] = token;
@@ -73,15 +73,15 @@ async function _request<T>(
       cacheDel,
     });
   } catch (e) {
-    debug && _logWarn("onRequest threw error: " + (e as Error).message);
+    debug && logWarn("onRequest threw error: " + (e as Error).message);
   }
 
   if (options?.cache) {
     const data = inMemory.get(url) as T;
     if (data) {
       if (debug) {
-        data && _cacheSuccessLog({ url, method, body: options?.body });
-        _cacheDataLog(data);
+        data && cacheSuccessLog({ url, method, body: options?.body });
+        cacheDataLog(data);
 
         return data;
       }
@@ -90,7 +90,7 @@ async function _request<T>(
 
   // --- FETCH ---
   try {
-    debug && _logInfo(t("Base:info.start"));
+    debug && logInfo(t("Base:info.start"));
     const response = await fetch(url, {
       method,
       headers,
@@ -99,7 +99,12 @@ async function _request<T>(
     });
 
     if (response.ok) {
-      const data = !["HEAD", "OPTIONS"].includes(method) ? ((await response.json()) as T) : null;
+      let data;
+      if (response.status !== 204) {
+        data = !["HEAD", "OPTIONS"].includes(method) ? ((await response.json()) as T) : null;
+      } else {
+        data = { Http204: "Empty response" } as T;
+      }
 
       // --- LOGS ---
       if (options?.cache) {
@@ -113,12 +118,12 @@ async function _request<T>(
 
       // --- Logs ---
       if (debug) {
-        _logInfo(t("Base:info.complete"));
+        logInfo(t("Base:info.complete"));
         if (["HEAD", "OPTIONS"].includes(method)) {
-          _systemHttpLog(response, method, url);
+          systemHttpLog(response, method, url);
         } else {
-          _httpSuccessLog({ url, method, body: options?.body });
-          data ? httpDataLog(data) : _logWarn(t("Base:debug.empty"));
+          httpSuccessLog({ url, method, body: options?.body });
+          data ? httpDataLog(data) : logWarn(t("Base:debug.empty"));
         }
       }
 
@@ -127,16 +132,16 @@ async function _request<T>(
 
       return data as T;
     } else {
-      debug && _httpErrLog(response.status);
+      debug && httpErrLog(response.status);
       // noinspection ExceptionCaughtLocallyJS
       throw response;
     }
   } catch (err: any) {
     if (debug) {
       if (err instanceof Error && err.name === "AbortError") {
-        _logError(`${t("Base:debug.abort")}`);
+        logError(`${t("Base:debug.abort")}`);
       } else if (!(err instanceof Response)) {
-        _NetworkErrLog();
+        NetworkErrLog();
       }
     }
 
@@ -156,7 +161,7 @@ async function _request<T>(
 
       if (result) return result as T;
     } catch (hookErr) {
-      debug && _logWarn("onError threw error: " + (hookErr as Error).message);
+      debug && logWarn("onError threw error: " + (hookErr as Error).message);
     }
 
     return null;

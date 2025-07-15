@@ -1,6 +1,6 @@
 {
   "name": "shape-rq",
-  "version": "2.0.0-beta.01",
+  "version": "2.0.0-beta.06",
   "type": "module",
   "main": "dist/index.cjs",
   "module": "dist/index.js",
