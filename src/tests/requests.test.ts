@@ -1,6 +1,6 @@
 import { expect, describe, it } from "vitest";
 
-import { httpGet, httpPost } from "../http/request";
+import {httpDel, httpGet, httpPost} from "../http/request";
 import { setConfig } from "../core/config";
 import type { testTodo } from "./test-types";
 import type { iShapeRQHooks } from "../types";
@@ -13,6 +13,7 @@ const testConfig = () => {
       },
     },
     lang: "en",
+    debug: true,
   });
 };
 
@@ -41,8 +42,17 @@ describe("ShapeRQ requests tests", () => {
       body: "SHKEBEDE",
     };
 
-    expect(await httpPost<{ id: number }>("Main", "/posts", { body })).toStrictEqual({ id: 101 });
+    expect(await httpPost<testTodo>("Main", "/posts", { body })).toStrictEqual({
+      userId: 1,
+      id: 101,
+      title: "TEST TITLE",
+      body: "SHKEBEDE",
+    });
   });
+
+  it("httpDel test", async () => {
+    expect(await httpDel<{}>("Main", "/posts/1")).toStrictEqual({})
+  })
 
   it("httpGet retry test", async () => {
     let retryCount = 0;

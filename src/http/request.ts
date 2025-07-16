@@ -24,7 +24,7 @@ import { cacheDel, inMemory } from "../utils/cache/cache";
  * @param `options` - options for the request, contain body, headers, xsrf, signal, hooks
  * @internal
  */
-async function _request<T>(
+async function request<T>(
   method: methodType,
   api: apiType,
   endpoint?: string,
@@ -99,7 +99,7 @@ async function _request<T>(
     });
 
     if (response.ok) {
-      let data;
+      let data: T | null;
       if (response.status !== 204) {
         data = !["HEAD", "OPTIONS"].includes(method) ? ((await response.json()) as T) : null;
       } else {
@@ -147,7 +147,7 @@ async function _request<T>(
 
     // --- onError hook ---
     try {
-      const retry = () => _request<T>(method, api, endpoint, options);
+      const retry = () => request<T>(method, api, endpoint, options);
 
       const result = await options?.hooks?.onError?.({
         error: err,
@@ -169,42 +169,42 @@ async function _request<T>(
 }
 
 /**
- * Wrapper for request with GET method. See {@link _request} for details.
+ * Wrapper for request with GET method. See {@link request} for details.
  */
 export const httpGet = <T>(api: apiType, endpoint?: string, options?: optionsType) =>
-  _request<T>("GET", api, endpoint, options);
+  request<T>("GET", api, endpoint, options);
 
 /**
- * Wrapper for request with DELETE method. See {@link _request} for details.
+ * Wrapper for request with DELETE method. See {@link request} for details.
  */
 export const httpDel = <T>(api: apiType, endpoint?: string, options?: optionsType) =>
-  _request<T>("DELETE", api, endpoint, options);
+  request<T>("DELETE", api, endpoint, options);
 
 /**
- * Wrapper for request with HEAD method. See {@link _request} for details.
+ * Wrapper for request with HEAD method. See {@link request} for details.
  */
 export const httpHead = <T>(api: apiType, endpoint?: string, options?: optionsType) =>
-  _request<T>("HEAD", api, endpoint, options);
+  request<T>("HEAD", api, endpoint, options);
 
 /**
- * Wrapper for request with OPTIONS method. See {@link _request} for details.
+ * Wrapper for request with OPTIONS method. See {@link request} for details.
  */
 export const httpOpt = <T>(api: apiType, endpoint?: string, options?: optionsType) =>
-  _request<T>("OPTIONS", api, endpoint, options);
+  request<T>("OPTIONS", api, endpoint, options);
 
 /**
- * Wrapper for request with POST method. See {@link _request} for details.
+ * Wrapper for request with POST method. See {@link request} for details.
  */
 export const httpPost = <T>(api: apiType, endpoint?: string, options?: optionsType) =>
-  _request<T>("POST", api, endpoint, options);
+  request<T>("POST", api, endpoint, options);
 /**
- * Wrapper for request with PUT method. See {@link _request} for details.
+ * Wrapper for request with PUT method. See {@link request} for details.
  */
 export const httpPut = <T>(api: apiType, endpoint?: string, options?: optionsType) =>
-  _request<T>("PUT", api, endpoint, options);
+  request<T>("PUT", api, endpoint, options);
 
 /**
- * Wrapper for request with PATCH method. See {@link _request} for details.
+ * Wrapper for request with PATCH method. See {@link request} for details.
  */
 export const httpPatch = <T>(api: apiType, endpoint?: string, options?: optionsType) =>
-  _request<T>("PATCH", api, endpoint, options);
+  request<T>("PATCH", api, endpoint, options);
