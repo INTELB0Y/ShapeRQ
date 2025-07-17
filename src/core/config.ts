@@ -1,18 +1,19 @@
 import type { iShapeRQConfig } from "../types";
+import { t } from "../locales/i18.ts";
 
 class Configure {
   static #config: iShapeRQConfig | null = null;
 
   static create(config: iShapeRQConfig): void {
     if (this.#config) {
-      throw new Error("Config is already exist, to change  it use changeConfig()");
+      throw new Error(t("Base:config.shouldChange"));
     }
     this.#config = config;
   }
 
   static change(config: Partial<iShapeRQConfig>): void {
     if (!this.#config) {
-      throw new Error("You should create a new config");
+      throw new Error(t("Base:config.shouldCreate"));
     }
 
     this.#config = {
@@ -28,7 +29,7 @@ class Configure {
 
   static get(): iShapeRQConfig {
     if (!this.#config) {
-      throw new Error("You should create a new config");
+      throw new Error(t("Base:config.shouldCreate"));
     }
     return this.#config;
   }

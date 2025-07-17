@@ -16,5 +16,9 @@
     "abort": "Request was aborted.",
     "cache": "Received data from cache:",
     "cacheSuccess": "Successfully received data from the cache:"
+  },
+  "config": {
+    "shouldCreate": "You should create a new config via createConfig()",
+    "shouldChange": "Config is already exist, use changeConfig() to change it."
   }
 }
