@@ -1,8 +1,8 @@
 import { expect, describe, it } from "vitest";
 
-import { httpGet, httpPost } from "../http/request";
+import {httpDel, httpGet, httpPost} from "../http/request";
 import { setConfig } from "../core/config";
-import type { todo } from "./test-types";
+import type { testTodo } from "./test-types";
 import type { iShapeRQHooks } from "../types";
 
 const testConfig = () => {
@@ -13,6 +13,7 @@ const testConfig = () => {
       },
     },
     lang: "en",
+    debug: true,
   });
 };
 
@@ -20,17 +21,17 @@ describe("ShapeRQ requests tests", () => {
   testConfig();
 
   it("httpGet request test", async () => {
-    const resp: todo = {
+    const resp: testTodo = {
       userId: 1,
       id: 1,
       title: "delectus aut autem",
       completed: false,
     };
-    expect(await httpGet<todo>("Main", "/todos/1")).toStrictEqual(resp);
+    expect(await httpGet<testTodo>("Main", "/todos/1")).toStrictEqual(resp);
   });
 
   it("httpGet request fails", async () => {
-    expect(await httpGet<todo>("Main", "/error/404")).toBeNull();
+    expect(await httpGet<testTodo>("Main", "/error/404")).toBeNull();
   });
 
   it("httpPost test", async () => {
@@ -41,8 +42,17 @@ describe("ShapeRQ requests tests", () => {
       body: "SHKEBEDE",
     };
 
-    expect(await httpPost<{ id: number }>("Main", "/posts", { body })).toStrictEqual({ id: 101 });
+    expect(await httpPost<testTodo>("Main", "/posts", { body })).toStrictEqual({
+      userId: 1,
+      id: 101,
+      title: "TEST TITLE",
+      body: "SHKEBEDE",
+    });
   });
+
+  it("httpDel test", async () => {
+    expect(await httpDel<{}>("Main", "/posts/1")).toStrictEqual({})
+  })
 
   it("httpGet retry test", async () => {
     let retryCount = 0;
@@ -54,6 +64,6 @@ describe("ShapeRQ requests tests", () => {
         }
       },
     };
-    expect(await httpGet<todo>("Main", "/todos/0", { hooks: hook })).toStrictEqual(null);
+    expect(await httpGet<testTodo>("Main", "/todos/0", { hooks: hook })).toStrictEqual(null);
   });
 });

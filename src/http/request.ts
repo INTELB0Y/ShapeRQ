@@ -22,6 +22,7 @@ import { cacheDel, inMemory } from "../utils/cache/cache";
  * @param `api` - API from config
  * @param `endpoint` - API endpoint
  * @param `options` - options for the request, contain body, headers, xsrf, signal, hooks
+ * @internal
  */
 async function request<T>(
   method: methodType,
@@ -44,7 +45,7 @@ async function request<T>(
   const headers: headersType = {
     ...options?.headers,
     ...APIs[api]?.headers,
-    contentType,
+    "Content-Type": contentType,
   };
 
   // --- AUTH HEADER ---
@@ -98,7 +99,12 @@ async function request<T>(
     });
 
     if (response.ok) {
-      const data = !["HEAD", "OPTIONS"].includes(method) ? ((await response.json()) as T) : null;
+      let data: T | null;
+      if (response.status !== 204) {
+        data = !["HEAD", "OPTIONS"].includes(method) ? ((await response.json()) as T) : null;
+      } else {
+        data = { Http204: "Empty response" } as T;
+      }
 
       // --- LOGS ---
       if (options?.cache) {

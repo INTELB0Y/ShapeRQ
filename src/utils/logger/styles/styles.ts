@@ -3,7 +3,6 @@ import { baseStyles, sucBaseStyles, errBaseStyles } from "./baseStyles";
 // Simple styles
 export const simpleStyles: SimpleStylesType = {
   info: `color: ${baseStyles.palette.info}; ${baseStyles.font.simply}`,
-  success: `color: ${baseStyles.palette.success}; ${baseStyles.font.simply}`,
   warn: `color: ${baseStyles.palette.warn}; ${baseStyles.font.simply}`,
   error: `color: ${baseStyles.palette.error}; ${baseStyles.font.simply}`,
 };

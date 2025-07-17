@@ -2,7 +2,7 @@ import { expect, describe, it } from "vitest";
 
 import { httpGet } from "../http/request";
 import { setConfig } from "../core/config";
-import type { todo } from "./test-types";
+import type { testTodo } from "./test-types";
 import type { iShapeRQHooks } from "../types";
 
 const testConfig = () => {
@@ -21,18 +21,20 @@ describe("ShapeRQ cache tests", () => {
   testConfig();
 
   it("httpGet cache test", async () => {
-    const resp: todo = {
+    const resp: testTodo = {
       userId: 1,
       id: 1,
       title: "delectus aut autem",
       completed: false,
     };
-    await httpGet<todo>("Main", "/todos/1", { cache: true });
-    expect(await httpGet<todo>("Main", "/todos/1", { cache: { ttl: 1000 } })).toStrictEqual(resp);
+    await httpGet<testTodo>("Main", "/todos/1", { cache: true });
+    expect(await httpGet<testTodo>("Main", "/todos/1", { cache: { ttl: 1000 } })).toStrictEqual(
+      resp,
+    );
   });
 
   it("httpGet delete cache test", async () => {
-    const resp: todo = {
+    const resp: testTodo = {
       userId: 1,
       id: 1,
       title: "delectus aut autem",
@@ -43,9 +45,9 @@ describe("ShapeRQ cache tests", () => {
         cacheDel(url);
       },
     };
-    await httpGet<todo>("Main", "/todos/1", { cache: true });
+    await httpGet<testTodo>("Main", "/todos/1", { cache: true });
     expect(
-      await httpGet<todo>("Main", "/todos/1", { hooks: hook, cache: { ttl: 1000 } }),
+      await httpGet<testTodo>("Main", "/todos/1", { hooks: hook, cache: { ttl: 1000 } }),
     ).toStrictEqual(resp);
   });
 });
