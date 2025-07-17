@@ -1,24 +1,12 @@
 import { expect, describe, it } from "vitest";
 
-import {httpDel, httpGet, httpPost} from "../http/request";
-import { setConfig } from "../core/config";
+import { httpDel, httpGet, httpPost } from "../http/request";
 import type { testTodo } from "./test-types";
+import testCfg from "./test-config";
 import type { iShapeRQHooks } from "../types";
 
-const testConfig = () => {
-  setConfig({
-    APIs: {
-      Main: {
-        baseUrl: "https://jsonplaceholder.typicode.com",
-      },
-    },
-    lang: "en",
-    debug: true,
-  });
-};
-
 describe("ShapeRQ requests tests", () => {
-  testConfig();
+  testCfg();
 
   it("httpGet request test", async () => {
     const resp: testTodo = {
@@ -51,8 +39,8 @@ describe("ShapeRQ requests tests", () => {
   });
 
   it("httpDel test", async () => {
-    expect(await httpDel<{}>("Main", "/posts/1")).toStrictEqual({})
-  })
+    expect(await httpDel<{}>("Main", "/posts/1")).toStrictEqual({});
+  });
 
   it("httpGet retry test", async () => {
     let retryCount = 0;

@@ -1,24 +1,12 @@
 import { expect, describe, it } from "vitest";
 
 import { httpGet } from "../http/request";
-import { setConfig } from "../core/config";
+import testCfg from "./test-config";
 import type { testTodo } from "./test-types";
 import type { iShapeRQHooks } from "../types";
 
-const testConfig = () => {
-  setConfig({
-    APIs: {
-      Main: {
-        baseUrl: "https://jsonplaceholder.typicode.com",
-      },
-    },
-    lang: "en",
-    debug: true,
-  });
-};
-
 describe("ShapeRQ cache tests", () => {
-  testConfig();
+  testCfg();
 
   it("httpGet cache test", async () => {
     const resp: testTodo = {
