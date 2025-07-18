@@ -18,11 +18,10 @@ import { cacheDel, inMemory } from "../utils/cache/cache";
 
 /**
  * Function for sending requests to the API;
- * @param `method` - request method, GET, POST, PUT, PATCH, DELETE, HEAD, OPTIONS
- * @param `api` - API from config
- * @param `endpoint` - API endpoint
- * @param `options` - options for the request, contain body, headers, xsrf, signal, hooks
- * @internal
+ * @param {methodType} `method` - request method, GET, POST, PUT, PATCH, DELETE, HEAD, OPTIONS
+ * @param {apiType} `api` - API from config
+ * @param {string} `endpoint` - API endpoint
+ * @param {optionsType} `options` - options for the request, contain body, headers, xsrf, signal, hooks, cache
  */
 async function request<T>(
   method: methodType,
@@ -71,6 +70,8 @@ async function request<T>(
     options?.hooks?.onRequest?.({
       url,
       cacheDel,
+      headers,
+      body,
     });
   } catch (e) {
     debug && logWarn("onRequest threw error: " + (e as Error).message);
@@ -96,6 +97,8 @@ async function request<T>(
       headers,
       body: !["GET", "DELETE", "HEAD", "OPTIONS"].includes(method) ? body : null,
       signal: options?.signal,
+      mode: options?.mode,
+      credentials: options?.credentials,
     });
 
     if (response.ok) {
@@ -169,42 +172,99 @@ async function request<T>(
 }
 
 /**
- * Wrapper for request with GET method. See {@link request} for details.
+ * Function for GET request;
+ * @template T generic for returns data;
+ * @param {apiType} `api` - API from config
+ * @param {string} `endpoint` - API endpoint
+ * @param {optionsType} `options` - options for the request, contain body, headers, xsrf, signal, hooks
+ * @return {Promise<T | null>}: data or null if request failed
  */
-export const httpGet = <T>(api: apiType, endpoint?: string, options?: optionsType) =>
-  request<T>("GET", api, endpoint, options);
+export const httpGet = <T>(
+  api: apiType,
+  endpoint?: string,
+  options?: optionsType,
+): Promise<T | null> => request<T>("GET", api, endpoint, options);
 
 /**
- * Wrapper for request with DELETE method. See {@link request} for details.
+ * Function for DELETE request;
+ * @template T generic for returns data;
+ * @param {apiType} `api` - API from config
+ * @param {string} `endpoint` - API endpoint
+ * @param {optionsType} `options` - options for the request, contain body, headers, xsrf, signal, hooks
+ * @return {Promise<T | null>}: data or null if request failed
  */
-export const httpDel = <T>(api: apiType, endpoint?: string, options?: optionsType) =>
-  request<T>("DELETE", api, endpoint, options);
+export const httpDel = <T>(
+  api: apiType,
+  endpoint?: string,
+  options?: optionsType,
+): Promise<T | null> => request<T>("DELETE", api, endpoint, options);
 
 /**
- * Wrapper for request with HEAD method. See {@link request} for details.
+ * Function for HEAD request;
+ * @template T generic for returns data;
+ * @param {apiType} `api` - API from config
+ * @param {string} `endpoint` - API endpoint
+ * @param {optionsType} `options` - options for the request, contain body, headers, xsrf, signal, hooks
+ * @return {Promise<T | null>}: data or null if request failed
  */
-export const httpHead = <T>(api: apiType, endpoint?: string, options?: optionsType) =>
-  request<T>("HEAD", api, endpoint, options);
+export const httpHead = <T>(
+  api: apiType,
+  endpoint?: string,
+  options?: optionsType,
+): Promise<T | null> => request<T>("HEAD", api, endpoint, options);
 
 /**
- * Wrapper for request with OPTIONS method. See {@link request} for details.
+ * Function for OPTIONS request;
+ * @template T generic for returns data;
+ * @param {apiType} `api` - API from config
+ * @param {string} `endpoint` - API endpoint
+ * @param {optionsType} `options` - options for the request, contain body, headers, xsrf, signal, hooks
+ * @return {Promise<T | null>}: data or null if request failed
  */
-export const httpOpt = <T>(api: apiType, endpoint?: string, options?: optionsType) =>
-  request<T>("OPTIONS", api, endpoint, options);
+export const httpOpt = <T>(
+  api: apiType,
+  endpoint?: string,
+  options?: optionsType,
+): Promise<T | null> => request<T>("OPTIONS", api, endpoint, options);
 
 /**
- * Wrapper for request with POST method. See {@link request} for details.
+ * Function for POST request;
+ * @template T generic for returns data;
+ * @param {apiType} `api` - API from config
+ * @param {string} `endpoint` - API endpoint
+ * @param {optionsType} `options` - options for the request, contain body, headers, xsrf, signal, hooks
+ * @return {Promise<T | null>}: data or null if request failed
  */
-export const httpPost = <T>(api: apiType, endpoint?: string, options?: optionsType) =>
-  request<T>("POST", api, endpoint, options);
-/**
- * Wrapper for request with PUT method. See {@link request} for details.
- */
-export const httpPut = <T>(api: apiType, endpoint?: string, options?: optionsType) =>
-  request<T>("PUT", api, endpoint, options);
+export const httpPost = <T>(
+  api: apiType,
+  endpoint?: string,
+  options?: optionsType,
+): Promise<T | null> => request<T>("POST", api, endpoint, options);
 
 /**
- * Wrapper for request with PATCH method. See {@link request} for details.
+ * Function for PUT request;
+ * @template T generic for returns data;
+ * @param {apiType} `api` - API from config
+ * @param {string} `endpoint` - API endpoint
+ * @param {optionsType} `options` - options for the request, contain body, headers, xsrf, signal, hooks
+ * @return {Promise<T | null>}: data or null if request failed
  */
-export const httpPatch = <T>(api: apiType, endpoint?: string, options?: optionsType) =>
-  request<T>("PATCH", api, endpoint, options);
+export const httpPut = <T>(
+  api: apiType,
+  endpoint?: string,
+  options?: optionsType,
+): Promise<T | null> => request<T>("PUT", api, endpoint, options);
+
+/**
+ * Function for PATCH request;
+ * @template T generic for returns data;
+ * @param {apiType} `api` - API from config
+ * @param {string} `endpoint` - API endpoint
+ * @param {optionsType} `options` - options for the request, contain body, headers, xsrf, signal, hooks
+ * @return {Promise<T | null>}: data or null if request failed
+ */
+export const httpPatch = <T>(
+  api: apiType,
+  endpoint?: string,
+  options?: optionsType,
+): Promise<T | null> => request<T>("PATCH", api, endpoint, options);

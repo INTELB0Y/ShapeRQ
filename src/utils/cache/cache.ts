@@ -4,6 +4,7 @@ export class inMemory {
   static set<T>(url: string, data: T) {
     this.#cache.set(url, data);
   }
+
   static get(url: string) {
     return this.#cache.get(url);
   }
@@ -19,4 +20,8 @@ export class inMemory {
   }
 }
 
+/**
+ * Function for force cache deleting;
+ * @param {string} url the URL from which the data was cached;
+ */
 export const cacheDel = (url: string) => inMemory.delete(url);

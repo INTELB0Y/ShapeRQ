@@ -126,8 +126,6 @@ export function NetworkErrLog(): void {
     `%c${t(`Http:networkError.possibleCauses`)}`,
     `%c${styles.separator || ""}`,
     `%c${t(`Http:networkError.suggestions`)}`,
-    `%c${styles.separator || "\n"}`,
-    `%c${t(`Http:networkError.doc`)}`,
   ];
 
   const styleValues: string[] = [
@@ -135,8 +133,6 @@ export function NetworkErrLog(): void {
     styles.message,
     styles.separator ?? "",
     styles.message,
-    styles.separator ?? "",
-    styles.doc ?? "",
   ];
 
   console.error(lines.join("\n"), ...styleValues);
