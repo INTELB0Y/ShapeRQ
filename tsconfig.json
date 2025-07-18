@@ -22,5 +22,5 @@
     "noUncheckedSideEffectImports": true
   },
   "include": ["src"],
-  "exclude": ["src/tests","**/*.spec.ts", "**/*.test.ts", "**/utils/logger/**", "**/locales/**"]
+  "exclude": ["src/tests","**/*.spec.ts", "**/*.test.ts", "**/utils/logger/**", "**/locales/**", "**/xsrfProtection.ts"]
 }
