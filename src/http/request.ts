@@ -36,18 +36,18 @@ async function request<T>(
 
   // --- Validation ---
   const safeMethods: methodType[] = ["GET", "HEAD", "OPTIONS"];
-  const body = options?.body instanceof FormData ? options?.body : JSON.stringify(options?.body);
+  const body = options?.body instanceof FormData ? options.body : JSON.stringify(options?.body);
   const contentType =
     options?.body instanceof FormData ? "multipart/form-data" : "application/json";
 
-  // --- REQUEST HEADERS ---
+  // --- Request headers ---
   const headers: headersType = {
     ...options?.headers,
     ...APIs[api]?.headers,
     "Content-Type": contentType,
   };
 
-  // --- AUTH HEADER ---
+  // --- Auth header ---
   if (auth?.token()) {
     headers[String(auth.headerName || "Authorization")] =
       `${auth.prefix || "Bearer"} ${auth.token()}`;
@@ -81,11 +81,10 @@ async function request<T>(
     const data = inMemory.get(url) as T;
     if (data) {
       if (debug) {
-        data && cacheSuccessLog({ url, method, body: options?.body });
+        data && cacheSuccessLog({ url, method, body: body });
         cacheDataLog(data);
-
-        return data;
       }
+      return data;
     }
   }
 
@@ -95,7 +94,7 @@ async function request<T>(
     const response = await fetch(url, {
       method,
       headers,
-      body: !["GET", "DELETE", "HEAD", "OPTIONS"].includes(method) ? body : null,
+      body: !["DELETE", ...safeMethods].includes(method) ? body : null,
       signal: options?.signal,
       mode: options?.mode,
       credentials: options?.credentials,
@@ -109,12 +108,11 @@ async function request<T>(
         data = { Http204: "Empty response" } as T;
       }
 
-      // --- LOGS ---
       if (options?.cache) {
         if (data) {
           inMemory.set<T>(url, data);
-          if (options?.cache !== true) {
-            inMemory.ttl(url, options?.cache?.ttl ?? 1000);
+          if (options.cache !== true) {
+            inMemory.ttl(url, options.cache);
           }
         }
       }

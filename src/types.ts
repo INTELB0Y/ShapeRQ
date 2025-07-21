@@ -11,11 +11,11 @@ export type bodyType = Record<string, unknown> | FormData | string;
 
 export type headersType = Record<string, string>;
 
-type cacheOptionsType =
-  | {
-      ttl?: number;
-    }
-  | true;
+// type cacheOptionsType =
+//   | {
+//       ttl: number;
+//     }
+//   | true;
 
 /**
  * @typeParam `body` - Request body can be an object, FormData, or string
@@ -27,7 +27,7 @@ type cacheOptionsType =
 export type optionsType = {
   hooks?: iShapeRQHooks;
   xsrf?: boolean;
-  cache?: cacheOptionsType;
+  cache?: true | number;
 
   signal?: AbortSignal;
   mode?: RequestMode;
