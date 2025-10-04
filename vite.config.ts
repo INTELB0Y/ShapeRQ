@@ -1,21 +1,22 @@
-import { defineConfig } from 'vite';
-import dts from 'vite-plugin-dts';
+import { defineConfig } from "vite";
+import dts from "vite-plugin-dts";
 
 export default defineConfig({
-    build: {
-        lib: {
-            entry: 'src/index.ts',
-            name: 'ShapeRQ',
-            formats: ['es', 'cjs'],
-            fileName: (format) => (format === 'cjs' ? 'index.cjs' : 'index.js'),
-        },
-        outDir: 'dist',
+  build: {
+    lib: {
+      entry: "src/index.ts",
+      name: "ShapeRQ",
+      formats: ["es", "cjs"],
+      fileName: (format) => (format === "cjs" ? "index.cjs" : "index.js"),
     },
-    plugins: [
-        dts({
-            entryRoot: 'src',
-            outDir: 'dist',
-            insertTypesEntry: true,
-        }),
-    ],
+    outDir: "dist",
+    sourcemap: false,
+  },
+  plugins: [
+    dts({
+      entryRoot: "src",
+      outDir: "dist",
+      insertTypesEntry: true,
+    }),
+  ],
 });

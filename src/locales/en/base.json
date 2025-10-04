@@ -13,6 +13,12 @@
     "body": "Request body:",
     "empty": "Empty response from API.",
     "xsrf": "XSRF Error: Failed to get XSRF token.",
-    "abort": "Request was aborted."
+    "abort": "Request was aborted.",
+    "cache": "Received data from cache:",
+    "cacheSuccess": "Successfully received data from the cache:"
+  },
+  "config": {
+    "shouldCreate": "You should create a new config via createConfig()",
+    "shouldChange": "Config is already exist, use changeConfig() to change it."
   }
 }

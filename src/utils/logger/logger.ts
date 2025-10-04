@@ -8,22 +8,18 @@ import {
   blinkSuccessStyles,
   blinkDataStyles,
 } from "./styles/styles";
-import type { httpData, iStyles, methodType } from "../../types";
+import type { httpDataType, StylesType, methodType } from "../../types";
 
 const getBrowserEngine = () => {
-  const userAgent = navigator.userAgent;
-  if (userAgent.includes(`Firefox`)) {
+  const userAgent = navigator?.userAgent;
+  if (userAgent?.includes(`Firefox`)) {
     return "gecko";
   } else {
     return "blink";
   }
 };
 
-export function systemHttpLog(
-  response: Response,
-  method: methodType,
-  url: string,
-): void {
+export function systemHttpLog(response: Response, method: methodType, url: string): void {
   const styles = getBrowserEngine() ? geckoSuccessStyles : blinkSuccessStyles;
 
   const lines = [
@@ -33,12 +29,7 @@ export function systemHttpLog(
     `%c${JSON.stringify(Object.fromEntries(response.headers.entries()), null, 2)}`,
   ];
 
-  const styleValues = [
-    styles.title,
-    styles.message,
-    styles.message,
-    styles.body || "",
-  ];
+  const styleValues = [styles.title, styles.message, styles.message, styles.body || ""];
 
   console.info(lines.join("\n"), ...styleValues);
 }
@@ -48,25 +39,27 @@ export function logInfo(msg: string): void {
 }
 
 export function httpDataLog(data: any): void {
-  const styles: iStyles =
-    getBrowserEngine() === "gecko" ? geckoDataStyles : blinkDataStyles;
+  const styles: StylesType = getBrowserEngine() === "gecko" ? geckoDataStyles : blinkDataStyles;
 
-  const lines: string[] = [
-    `%cℹ️ ${t("Base:debug.data")}`,
-    `%c${JSON.stringify(data, null, 2)}`,
-  ];
+  const lines: string[] = [`%cℹ️ ${t("Base:debug.data")}`, `%c${JSON.stringify(data, null, 2)}`];
 
   const styleValues = [styles.title, styles.message];
 
   console.info(lines.join("\n"), ...styleValues);
 }
 
-export function logSuccess(msg: string): void {
-  console.log(`%c[ShapeRQ] ✅ ${msg}`, simpleStyles.success);
+export function cacheDataLog(data: any): void {
+  const styles: StylesType = getBrowserEngine() === "gecko" ? geckoDataStyles : blinkDataStyles;
+
+  const lines: string[] = [`%cℹ️ ${t("Base:debug.cache")}`, `%c${JSON.stringify(data, null, 2)}`];
+
+  const styleValues = [styles.title, styles.message];
+
+  console.info(lines.join("\n"), ...styleValues);
 }
 
-export function httpSuccessLog(info: httpData): void {
-  const styles: iStyles =
+export function httpSuccessLog(info: httpDataType): void {
+  const styles: StylesType =
     getBrowserEngine() === "gecko" ? geckoSuccessStyles : blinkSuccessStyles;
 
   const lines: string[] = [
@@ -76,11 +69,23 @@ export function httpSuccessLog(info: httpData): void {
       `%c${info.body ? t("Base:debug.body") + "\n" + JSON.stringify(info.body, null, 2) : ""}`,
   ];
 
-  const styleValues: string[] = [
-    styles.title,
-    styles.message,
-    styles.body ?? "",
+  const styleValues: string[] = [styles.title, styles.message, styles.body ?? ""];
+
+  console.log(lines.join("\n"), ...styleValues);
+}
+
+export function cacheSuccessLog(info: httpDataType): void {
+  const styles: StylesType =
+    getBrowserEngine() === "gecko" ? geckoSuccessStyles : blinkSuccessStyles;
+
+  const lines: string[] = [
+    `%c✅ ${t("Base:debug.cacheSuccess")}\n` +
+      `%c${info.url}\n` +
+      `${info.method}\n` +
+      `%c${info.body ? t("Base:debug.body") + "\n" + JSON.stringify(info.body, null, 2) : ""}`,
   ];
+
+  const styleValues: string[] = [styles.title, styles.message, styles.body ?? ""];
 
   console.log(lines.join("\n"), ...styleValues);
 }
@@ -94,8 +99,7 @@ export function logError(msg: string): void {
 }
 
 export function httpErrLog(status: number): void {
-  let styles: iStyles =
-    getBrowserEngine() === "gecko" ? geckoErrStyles : blinkErrStyles;
+  let styles: StylesType = getBrowserEngine() === "gecko" ? geckoErrStyles : blinkErrStyles;
 
   const lines: string[] = [
     `%c${t(`Http:${status}.title`)}`,
@@ -115,8 +119,7 @@ export function httpErrLog(status: number): void {
 }
 
 export function NetworkErrLog(): void {
-  let styles: iStyles =
-    getBrowserEngine() === "gecko" ? geckoErrStyles : blinkErrStyles;
+  let styles: StylesType = getBrowserEngine() === "gecko" ? geckoErrStyles : blinkErrStyles;
 
   const lines = [
     `%c${t(`Http:networkError.title`)}`,

@@ -1,13 +1,7 @@
-export {
-  httpGet,
-  httpHead,
-  httpPost,
-  httpPut,
-  httpDel,
-  httpOpt,
-  httpPatch,
-} from "./http/request";
+export { httpGet, httpHead, httpPost, httpPut, httpDel, httpOpt, httpPatch } from "./http/request";
 
-export { setConfig } from "./core/config";
+export { cacheDel } from "./utils/cache/cache";
 
-export type { ShapeRQHooks } from "./types";
+export { createConfig, changeConfig } from "./core/config";
+
+export type { iShapeRQHooks, ApiConfigType } from "./types";

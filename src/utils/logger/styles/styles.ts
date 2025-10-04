@@ -1,43 +1,42 @@
-import type { iStyles, iSimpleStyles } from "../../../types";
+import type { StylesType, SimpleStylesType } from "../../../types";
 import { baseStyles, sucBaseStyles, errBaseStyles } from "./baseStyles";
 // Simple styles
-export const simpleStyles: iSimpleStyles = {
-  info: `color: #42A5F5; font-weight: bold; font-size: 12px`,
-  success: `color: #66BB6A; font-weight: bold; font-size: 12px`,
-  warn: `color: #FFA726; font-weight: bold; font-size: 12px`,
-  error: `color: #EF5350; font-weight: bold; font-size: 12px`,
+export const simpleStyles: SimpleStylesType = {
+  info: `color: ${baseStyles.palette.info}; ${baseStyles.font.simply}`,
+  warn: `color: ${baseStyles.palette.warn}; ${baseStyles.font.simply}`,
+  error: `color: ${baseStyles.palette.error}; ${baseStyles.font.simply}`,
 };
 
 // Data styles
-export const geckoDataStyles: iStyles = {
-  title: `color: #42A5F5; font-weight: bold; font-size: 16px;`,
-  message: `color: #42A5F5; border: 1px solid #42A5F5; display: block; background-color: #45454d; font-style: italic; padding: 3px; border-radius: 3px; margin-top: 4px`,
+export const geckoDataStyles: StylesType = {
+  title: `color: ${baseStyles.palette.info}; ${baseStyles.font.title}`,
+  message: `color: ${baseStyles.palette.info}; border: 1px solid ${baseStyles.palette.info}; background-color: ${baseStyles.palette.background}; font-style: italic; ${baseStyles.block}`,
 };
 
-export const blinkDataStyles: iStyles = {
-  title: `color: #42A5F5; font-weight: bold; font-size: 16px;`,
-  message: `color: #42A5F5; font-style: italic; margin-top: 4px`,
+export const blinkDataStyles: StylesType = {
+  title: `color: ${baseStyles.palette.info}; ${baseStyles.font.title}`,
+  message: `color: ${baseStyles.palette.info}; font-style: italic; margin-top: 4px`,
 };
 
 // Styles for successful requests
-export const geckoSuccessStyles: iStyles = {
+export const geckoSuccessStyles: StylesType = {
   title: sucBaseStyles.title,
   message:
     sucBaseStyles.message +
-    `border: 1px solid ${baseStyles.palette.success}; background-color: #45454d; ${baseStyles.block}`,
+    `border: 1px solid ${baseStyles.palette.success}; background-color: ${baseStyles.palette.background}; ${baseStyles.block}`,
   body:
     sucBaseStyles.body +
-    `border: 1px solid ${baseStyles.palette.success}; color:${baseStyles.palette.success}; ${baseStyles.block} background-color: #45454d; `,
+    `border: 1px solid ${baseStyles.palette.success}; color: ${baseStyles.palette.success}; ${baseStyles.block} background-color: ${baseStyles.palette.background}; `,
 };
 
-export const blinkSuccessStyles: iStyles = {
+export const blinkSuccessStyles: StylesType = {
   title: sucBaseStyles.title,
   message: sucBaseStyles.message,
   body: sucBaseStyles.body,
 };
 
 // Error styles
-export const geckoErrStyles: iStyles = {
+export const geckoErrStyles: StylesType = {
   title: errBaseStyles.title,
   message:
     errBaseStyles.message +
@@ -46,7 +45,7 @@ export const geckoErrStyles: iStyles = {
   doc: errBaseStyles.doc,
 };
 
-export const blinkErrStyles: iStyles = {
+export const blinkErrStyles: StylesType = {
   title: errBaseStyles.title,
   message: errBaseStyles.message,
   doc:
