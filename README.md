@@ -2,7 +2,6 @@
 
 ---
 
-[there our logo :))](https://github.com/INTELB0Y/Aspery/blob/dev/logo.png)
 
 **Astery** is a **Promise-based HTTP client** for the browser, built on top of the native `Fetch API`  
 Its goal is to **save your time** by offering a clean and flexible API for making HTTP requests
@@ -11,4 +10,4 @@ Its goal is to **save your time** by offering a clean and flexible API for makin
 
 ---
 
-**Version** – `Release 1.0.0`
+**Version** – `Release 2.0.0`
