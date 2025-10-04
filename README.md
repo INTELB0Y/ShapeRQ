@@ -1,4 +1,5 @@
-Astery 🚀
+![Astery* 🚀](https://github.com/INTELB0Y/Aspery/blob/dev/logo.png?raw=true)
+
 ---
 
 [there our logo :))](https://github.com/INTELB0Y/Aspery/blob/dev/logo.png)
