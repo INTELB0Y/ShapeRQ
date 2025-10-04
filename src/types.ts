@@ -7,7 +7,7 @@ export type apiType = keyof typeof APIs;
 // Request types
 export type methodType = "GET" | "POST" | "PUT" | "PATCH" | "DELETE" | "HEAD" | "OPTIONS";
 
-export type bodyType = Record<string, unknown> | FormData | string;
+export type bodyType = unknown;
 
 export type headersType = Record<string, string>;
 
