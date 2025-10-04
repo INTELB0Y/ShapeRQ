@@ -1,16 +1,16 @@
-import type { iShapeRQConfig } from "../types";
+import type { iAsperyConfig } from "../types";
 
 class Configure {
-  static #config: iShapeRQConfig | null = null;
+  static #config: iAsperyConfig | null = null;
 
-  static create(config: iShapeRQConfig): void {
+  static create(config: iAsperyConfig): void {
     if (this.#config) {
       throw new Error("Config is already exists, use changeConfig() to change it.");
     }
     this.#config = config;
   }
 
-  static change(config: Partial<iShapeRQConfig>): void {
+  static change(config: Partial<iAsperyConfig>): void {
     if (!this.#config) {
       throw new Error("You haven't created a config yet, so it cannot be changed.");
     }
@@ -26,7 +26,7 @@ class Configure {
     };
   }
 
-  static get(): iShapeRQConfig {
+  static get(): iAsperyConfig {
     if (!this.#config) {
       throw new Error("You should create a new config via createConfig() before use any requests;");
     }
@@ -37,15 +37,15 @@ class Configure {
 /**
  * Function for creation a new configuration;
  * Cannot be used if config already exist;
- * @param {iShapeRQConfig} config - new config
+ * @param {iAsperyConfig} config - new config
  */
-export const createConfig = (config: iShapeRQConfig) => Configure.create(config);
+export const createConfig = (config: iAsperyConfig) => Configure.create(config);
 
 /**
  * Function for update an existence configuration;
  * Cannot be used if config is not created;
- * @param {Partial<iShapeRQConfig>} config - updated config
+ * @param {Partial<iAsperyConfig>} config - updated config
  */
-export const changeConfig = (config: iShapeRQConfig) => Configure.change(config);
+export const changeConfig = (config: iAsperyConfig) => Configure.change(config);
 
 export const getConfig = () => Configure.get();

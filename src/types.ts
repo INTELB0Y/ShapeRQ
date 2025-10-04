@@ -25,7 +25,7 @@ export type headersType = Record<string, string>;
  * @typeParam `hooks` - Optional hooks for request lifecycle events
  */
 export type optionsType = {
-  hooks?: iShapeRQHooks;
+  hooks?: iAsperyHooks;
   xsrf?: boolean;
   cache?: true | number;
 
@@ -66,7 +66,7 @@ type onRequestParams = {
   body?: bodyType;
 };
 
-export interface iShapeRQHooks {
+export interface iAsperyHooks {
   onError?: (params: onErrorParams) => Promise<unknown | null> | unknown | null;
   onRequest?: (params: onRequestParams) => void;
   onResponse?: <T>(data: T) => void;
@@ -88,7 +88,7 @@ export type ApiConfigType = {
  * @typeParam `debug` - Enable debug mode, default is false
  * @typeParam `lang` - Language for messages, default is "en", can be "ru" or "en"
  */
-export interface iShapeRQConfig {
+export interface iAsperyConfig {
   APIs: Record<string, ApiConfigType>;
   debug?: boolean;
   lang?: "ru" | "en";
