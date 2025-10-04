@@ -7,13 +7,15 @@ export type apiType = keyof typeof APIs;
 // Request types
 export type methodType = "GET" | "POST" | "PUT" | "PATCH" | "DELETE" | "HEAD" | "OPTIONS";
 
-export type bodyType = Record<string, any> | FormData | string;
+export type bodyType = unknown;
 
 export type headersType = Record<string, string>;
 
-type optionsCache = {
-  ttl?: number;
-};
+// type cacheOptionsType =
+//   | {
+//       ttl: number;
+//     }
+//   | true;
 
 /**
  * @typeParam `body` - Request body can be an object, FormData, or string
@@ -23,12 +25,16 @@ type optionsCache = {
  * @typeParam `hooks` - Optional hooks for request lifecycle events
  */
 export type optionsType = {
+  hooks?: iAsperyHooks;
+  xsrf?: boolean;
+  cache?: true | number;
+
+  signal?: AbortSignal;
+  mode?: RequestMode;
+  credentials?: RequestCredentials;
+
   body?: bodyType;
   headers?: headersType;
-  xsrf?: boolean;
-  signal?: AbortSignal | null;
-  hooks?: iShapeRQHooks;
-  cache?: optionsCache | true | undefined;
 };
 
 // Config types
@@ -43,7 +49,7 @@ export type authType = {
   prefix?: string;
 };
 
-export type OnErrorParams = {
+export type onErrorParams = {
   error: unknown;
   retry: () => Promise<unknown>;
   endpoint?: string;
@@ -52,19 +58,22 @@ export type OnErrorParams = {
   aborted?: boolean;
   isNetworkError?: boolean;
 };
+
 type onRequestParams = {
   url: string;
   cacheDel: (url: string) => void;
+  headers?: headersType;
+  body?: bodyType;
 };
 
-export interface iShapeRQHooks {
-  onError?: (params: OnErrorParams) => Promise<unknown | null> | unknown | null;
+export interface iAsperyHooks {
+  onError?: (params: onErrorParams) => Promise<unknown | null> | unknown | null;
   onRequest?: (params: onRequestParams) => void;
   onResponse?: <T>(data: T) => void;
 }
 
 /**
- * @typeParam `url` - Base URL for the API
+ * @typeParam `baseUrl` - Base URL for the API
  * @typeParam `headers` - Optional headers for the API requests
  * @typeParam `auth` - Optional authentication configuration
  */
@@ -79,7 +88,7 @@ export type ApiConfigType = {
  * @typeParam `debug` - Enable debug mode, default is false
  * @typeParam `lang` - Language for messages, default is "en", can be "ru" or "en"
  */
-export interface iShapeRQConfig {
+export interface iAsperyConfig {
   APIs: Record<string, ApiConfigType>;
   debug?: boolean;
   lang?: "ru" | "en";
