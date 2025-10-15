@@ -9,6 +9,6 @@ Its goal is to **save your time** by offering a clean and flexible API for makin
 
 ---
 
-**Version** – `Release 1.0.0`
+**Version** – `Release 2.0.3`
 
 *created by censure**
