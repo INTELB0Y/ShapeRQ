@@ -1,4 +1,4 @@
-![Astery* 🚀](https://github.com/INTELB0Y/Aspery/blob/dev/logo.png?raw=true)
+## Astery* 🚀
 
 ---
 
@@ -10,3 +10,5 @@ Its goal is to **save your time** by offering a clean and flexible API for makin
 ---
 
 **Version** – `Release 1.0.0`
+
+*created by censure**
