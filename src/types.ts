@@ -88,7 +88,7 @@ export type ApiConfigType = {
  * @typeParam `debug` - Enable debug mode, default is false
  * @typeParam `lang` - Language for messages, default is "en", can be "ru" or "en"
  */
-export interface iAsperyConfig {
+export interface iAsteryConfig {
   APIs: Record<string, ApiConfigType>;
   debug?: boolean;
   lang?: "ru" | "en";
