@@ -1,16 +1,16 @@
-import type { iAsteryConfig } from "../types";
+import type { iRekyConfig } from "../types";
 
 class Configure {
-  static #config: iAsteryConfig | null = null;
+  static #config: iRekyConfig | null = null;
 
-  static create(config: iAsteryConfig): void {
+  static create(config: iRekyConfig): void {
     if (this.#config) {
       throw new Error("Config is already exists, use changeConfig() to change it.");
     }
     this.#config = config;
   }
 
-  static change(config: Partial<iAsteryConfig>): void {
+  static change(config: Partial<iRekyConfig>): void {
     if (!this.#config) {
       throw new Error("You haven't created a config yet, so it cannot be changed.");
     }
@@ -26,7 +26,7 @@ class Configure {
     };
   }
 
-  static get(): iAsteryConfig {
+  static get(): iRekyConfig {
     if (!this.#config) {
       throw new Error("You should create a new config via createConfig() before use any requests;");
     }
@@ -37,15 +37,15 @@ class Configure {
 /**
  * Function for creation a new configuration;
  * Cannot be used if config already exist;
- * @param {iAsteryConfig} config - new config
+ * @param {iRekyConfig} config - new config
  */
-export const createConfig = (config: iAsteryConfig) => Configure.create(config);
+export const createConfig = (config: iRekyConfig) => Configure.create(config);
 
 /**
  * Function for update an existence configuration;
  * Cannot be used if config is not created;
- * @param {Partial<iAsteryConfig>} config - updated config
+ * @param {Partial<iRekyConfig>} config - updated config
  */
-export const changeConfig = (config: iAsteryConfig) => Configure.change(config);
+export const changeConfig = (config: iRekyConfig) => Configure.change(config);
 
 export const getConfig = () => Configure.get();
