@@ -3,4 +3,4 @@ export { httpGet, httpHead, httpPost, httpPut, httpDel, httpOpt, httpPatch } fro
 export { cacheDel } from "./utils/cache/cache";
 export { createConfig, changeConfig } from "./core/config";
 
-export type { iAsperyHooks, ApiConfigType } from "./types";
+export type { iRekyHooks, ApiConfigType } from "./types";

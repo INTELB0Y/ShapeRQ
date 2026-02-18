@@ -1,6 +1,6 @@
 {
-  "name": "astery",
-  "version": "2.0.4",
+  "name": "reky.http",
+  "version": "2.0.5",
   "type": "module",
   "main": "dist/index.cjs",
   "module": "dist/index.js",
@@ -34,8 +34,6 @@
     "api-client",
     "http-client",
     "promise",
-    "shape",
-    "shaperq",
     "frontend",
     "backend",
     "node",
@@ -50,7 +48,6 @@
     "vitest": "3.2.4"
   },
   "dependencies": {
-    "shape-rq": "^2.0.0-beta.13",
     "vite-plugin-dts": "^4.5.4"
   }
 }

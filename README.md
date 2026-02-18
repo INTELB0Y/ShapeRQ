@@ -1,4 +1,4 @@
-## reky.http* 🚀
+## reky.http 🚀
 
 ---
 
@@ -9,4 +9,4 @@ Its goal is to **save your time** by offering a clean and flexible API for makin
 
 ---
 
-**Version** – `Release 2.0.4`
+**Version** – `Release 2.0.5`
