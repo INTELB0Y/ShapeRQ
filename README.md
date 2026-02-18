@@ -1,4 +1,4 @@
-## reky.http* 🚀
+## reky.http 🚀
 
 ---
 
